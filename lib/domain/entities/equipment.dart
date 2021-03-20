@@ -1,0 +1,3 @@
+enum Equipment {
+  barbell,
+}

@@ -1,10 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+import 'package:workout_logger/domain/entities/routine_day.dart';
 
 class Routine extends Equatable {
+  final int id;
   final String name;
+  final List<RoutineDay> days;
 
-  const Routine(this.name);
+  const Routine({@required this.id, @required this.name, @required this.days});
 
   @override
-  List<Object> get props => [name];
+  List<Object> get props => [name, days];
 }
