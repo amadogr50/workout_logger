@@ -42,6 +42,8 @@ LazyDatabase _openConnection() {
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  MyDatabase.fromQueryExecutor(QueryExecutor queryExecutor) : super(queryExecutor);
+
   @override
   int get schemaVersion => 1;
 }
