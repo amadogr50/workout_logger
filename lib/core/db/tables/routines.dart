@@ -3,6 +3,7 @@ import 'package:moor/moor.dart';
 class Routines extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
+  BoolColumn get current => boolean().withDefault(const Constant(false))();
 }
 
 class RoutineDays extends Table {

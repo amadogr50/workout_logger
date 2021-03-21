@@ -2690,15 +2690,19 @@ class $UnitSystemsTable extends UnitSystems
 class Routine extends DataClass implements Insertable<Routine> {
   final int id;
   final String name;
-  Routine({@required this.id, @required this.name});
+  final bool current;
+  Routine({@required this.id, @required this.name, @required this.current});
   factory Routine.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return Routine(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      current:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}current']),
     );
   }
   @override
@@ -2710,6 +2714,9 @@ class Routine extends DataClass implements Insertable<Routine> {
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String>(name);
     }
+    if (!nullToAbsent || current != null) {
+      map['current'] = Variable<bool>(current);
+    }
     return map;
   }
 
@@ -2717,6 +2724,9 @@ class Routine extends DataClass implements Insertable<Routine> {
     return RoutinesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      current: current == null && nullToAbsent
+          ? const Value.absent()
+          : Value(current),
     );
   }
 
@@ -2726,6 +2736,7 @@ class Routine extends DataClass implements Insertable<Routine> {
     return Routine(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      current: serializer.fromJson<bool>(json['current']),
     );
   }
   @override
@@ -2734,55 +2745,69 @@ class Routine extends DataClass implements Insertable<Routine> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
+      'current': serializer.toJson<bool>(current),
     };
   }
 
-  Routine copyWith({int id, String name}) => Routine(
+  Routine copyWith({int id, String name, bool current}) => Routine(
         id: id ?? this.id,
         name: name ?? this.name,
+        current: current ?? this.current,
       );
   @override
   String toString() {
     return (StringBuffer('Routine(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('current: $current')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, current.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Routine && other.id == this.id && other.name == this.name);
+      (other is Routine &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.current == this.current);
 }
 
 class RoutinesCompanion extends UpdateCompanion<Routine> {
   final Value<int> id;
   final Value<String> name;
+  final Value<bool> current;
   const RoutinesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.current = const Value.absent(),
   });
   RoutinesCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
+    this.current = const Value.absent(),
   }) : name = Value(name);
   static Insertable<Routine> custom({
     Expression<int> id,
     Expression<String> name,
+    Expression<bool> current,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (current != null) 'current': current,
     });
   }
 
-  RoutinesCompanion copyWith({Value<int> id, Value<String> name}) {
+  RoutinesCompanion copyWith(
+      {Value<int> id, Value<String> name, Value<bool> current}) {
     return RoutinesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      current: current ?? this.current,
     );
   }
 
@@ -2795,6 +2820,9 @@ class RoutinesCompanion extends UpdateCompanion<Routine> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (current.present) {
+      map['current'] = Variable<bool>(current.value);
+    }
     return map;
   }
 
@@ -2802,7 +2830,8 @@ class RoutinesCompanion extends UpdateCompanion<Routine> {
   String toString() {
     return (StringBuffer('RoutinesCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('current: $current')
           ..write(')'))
         .toString();
   }
@@ -2833,8 +2862,17 @@ class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
     );
   }
 
+  final VerificationMeta _currentMeta = const VerificationMeta('current');
+  GeneratedBoolColumn _current;
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  GeneratedBoolColumn get current => _current ??= _constructCurrent();
+  GeneratedBoolColumn _constructCurrent() {
+    return GeneratedBoolColumn('current', $tableName, false,
+        defaultValue: const Constant(false));
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, current];
   @override
   $RoutinesTable get asDslTable => this;
   @override
@@ -2854,6 +2892,10 @@ class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
           _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
+    }
+    if (data.containsKey('current')) {
+      context.handle(_currentMeta,
+          current.isAcceptableOrUnknown(data['current'], _currentMeta));
     }
     return context;
   }
