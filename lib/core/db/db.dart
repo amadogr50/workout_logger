@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:workout_logger/core/db/daos/exercises_dao.dart';
 
+import 'daos/routines_dao.dart';
 import 'tables/exercises.dart';
 import 'tables/i18n.dart';
 import 'tables/routines.dart';
@@ -21,29 +22,36 @@ LazyDatabase _openConnection() {
   });
 }
 
-@UseMoor(tables: [
-  I18n,
-  Translations,
-  Locales,
-  Exercises,
-  ExercisesTypes,
-  Equipments,
-  ExercisesMuscles,
-  Muscles,
-  Sessions,
-  SessionItems,
-  UnitSystems,
-  Routines,
-  RoutineDays,
-  RoutineItems,
-], daos: [
-  ExercisesDao
-])
+@UseMoor(
+  tables: [
+    I18n,
+    Translations,
+    Locales,
+    ExercisesModel,
+    ExercisesTypesModel,
+    EquipmentsModel,
+    ExercisesMusclesModel,
+    MusclesModel,
+    SessionsModel,
+    SessionItemsModel,
+    UnitSystemsModel,
+    RoutinesModel,
+    RoutineDaysModel,
+    RoutineItemsModel,
+  ],
+  daos: [
+    ExercisesDao,
+    RoutinesDao,
+  ],
+)
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
-  MyDatabase.fromQueryExecutor(QueryExecutor queryExecutor) : super(queryExecutor);
+  MyDatabase.fromQueryExecutor(QueryExecutor queryExecutor)
+      : super(queryExecutor);
 
   @override
   int get schemaVersion => 1;
+
+
 }

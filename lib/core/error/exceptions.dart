@@ -1,0 +1,1 @@
+class DoesNotExistException implements Exception {}

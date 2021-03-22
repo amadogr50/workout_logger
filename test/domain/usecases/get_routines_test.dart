@@ -14,18 +14,4 @@ void main() {
     mockRoutinesRepository = MockRoutinesRepository();
     usecase = GetRoutines(mockRoutinesRepository);
   });
-
-  final routines = [const Routine('1234'), const Routine('2345')];
-
-  test('should get routines from the repository', () async {
-    // arrange
-    when(mockRoutinesRepository.getRoutines()).thenAnswer((_) async {
-      return routines;
-    });
-    // act
-    final result = await usecase.execute();
-    // assert
-    expect(result, routines);
-    verify(mockRoutinesRepository.getRoutines());
-  });
 }

@@ -7,10 +7,11 @@ part of 'exercises_dao.dart';
 // **************************************************************************
 
 mixin _$ExercisesDaoMixin on DatabaseAccessor<MyDatabase> {
-  $ExercisesTable get exercises => attachedDatabase.exercises;
-  $ExercisesTypesTable get exercisesTypes => attachedDatabase.exercisesTypes;
-  $EquipmentsTable get equipments => attachedDatabase.equipments;
-  $ExercisesMusclesTable get exercisesMuscles =>
-      attachedDatabase.exercisesMuscles;
-  $MusclesTable get muscles => attachedDatabase.muscles;
+  $ExercisesModelTable get exercisesModel => attachedDatabase.exercisesModel;
+  $ExercisesTypesModelTable get exercisesTypesModel =>
+      attachedDatabase.exercisesTypesModel;
+  $EquipmentsModelTable get equipmentsModel => attachedDatabase.equipmentsModel;
+  $ExercisesMusclesModelTable get exercisesMusclesModel =>
+      attachedDatabase.exercisesMusclesModel;
+  $MusclesModelTable get musclesModel => attachedDatabase.musclesModel;
 }

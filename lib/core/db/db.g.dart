@@ -621,24 +621,25 @@ class $LocalesTable extends Locales with TableInfo<$LocalesTable, Locale> {
   }
 }
 
-class Exercise extends DataClass implements Insertable<Exercise> {
+class ExerciseModel extends DataClass implements Insertable<ExerciseModel> {
   final int id;
   final int exerciseTypeId;
   final int equipmentId;
   final int i18nName;
   final String instructions;
-  Exercise(
+  ExerciseModel(
       {@required this.id,
       @required this.exerciseTypeId,
       @required this.equipmentId,
       @required this.i18nName,
       this.instructions});
-  factory Exercise.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory ExerciseModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Exercise(
+    return ExerciseModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       exerciseTypeId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}exercise_type_id']),
@@ -671,8 +672,8 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     return map;
   }
 
-  ExercisesCompanion toCompanion(bool nullToAbsent) {
-    return ExercisesCompanion(
+  ExercisesModelCompanion toCompanion(bool nullToAbsent) {
+    return ExercisesModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       exerciseTypeId: exerciseTypeId == null && nullToAbsent
           ? const Value.absent()
@@ -689,10 +690,10 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     );
   }
 
-  factory Exercise.fromJson(Map<String, dynamic> json,
+  factory ExerciseModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Exercise(
+    return ExerciseModel(
       id: serializer.fromJson<int>(json['id']),
       exerciseTypeId: serializer.fromJson<int>(json['exerciseTypeId']),
       equipmentId: serializer.fromJson<int>(json['equipmentId']),
@@ -712,13 +713,13 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     };
   }
 
-  Exercise copyWith(
+  ExerciseModel copyWith(
           {int id,
           int exerciseTypeId,
           int equipmentId,
           int i18nName,
           String instructions}) =>
-      Exercise(
+      ExerciseModel(
         id: id ?? this.id,
         exerciseTypeId: exerciseTypeId ?? this.exerciseTypeId,
         equipmentId: equipmentId ?? this.equipmentId,
@@ -727,7 +728,7 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       );
   @override
   String toString() {
-    return (StringBuffer('Exercise(')
+    return (StringBuffer('ExerciseModel(')
           ..write('id: $id, ')
           ..write('exerciseTypeId: $exerciseTypeId, ')
           ..write('equipmentId: $equipmentId, ')
@@ -747,7 +748,7 @@ class Exercise extends DataClass implements Insertable<Exercise> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Exercise &&
+      (other is ExerciseModel &&
           other.id == this.id &&
           other.exerciseTypeId == this.exerciseTypeId &&
           other.equipmentId == this.equipmentId &&
@@ -755,20 +756,20 @@ class Exercise extends DataClass implements Insertable<Exercise> {
           other.instructions == this.instructions);
 }
 
-class ExercisesCompanion extends UpdateCompanion<Exercise> {
+class ExercisesModelCompanion extends UpdateCompanion<ExerciseModel> {
   final Value<int> id;
   final Value<int> exerciseTypeId;
   final Value<int> equipmentId;
   final Value<int> i18nName;
   final Value<String> instructions;
-  const ExercisesCompanion({
+  const ExercisesModelCompanion({
     this.id = const Value.absent(),
     this.exerciseTypeId = const Value.absent(),
     this.equipmentId = const Value.absent(),
     this.i18nName = const Value.absent(),
     this.instructions = const Value.absent(),
   });
-  ExercisesCompanion.insert({
+  ExercisesModelCompanion.insert({
     this.id = const Value.absent(),
     @required int exerciseTypeId,
     @required int equipmentId,
@@ -777,7 +778,7 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
   })  : exerciseTypeId = Value(exerciseTypeId),
         equipmentId = Value(equipmentId),
         i18nName = Value(i18nName);
-  static Insertable<Exercise> custom({
+  static Insertable<ExerciseModel> custom({
     Expression<int> id,
     Expression<int> exerciseTypeId,
     Expression<int> equipmentId,
@@ -793,13 +794,13 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     });
   }
 
-  ExercisesCompanion copyWith(
+  ExercisesModelCompanion copyWith(
       {Value<int> id,
       Value<int> exerciseTypeId,
       Value<int> equipmentId,
       Value<int> i18nName,
       Value<String> instructions}) {
-    return ExercisesCompanion(
+    return ExercisesModelCompanion(
       id: id ?? this.id,
       exerciseTypeId: exerciseTypeId ?? this.exerciseTypeId,
       equipmentId: equipmentId ?? this.equipmentId,
@@ -831,7 +832,7 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
 
   @override
   String toString() {
-    return (StringBuffer('ExercisesCompanion(')
+    return (StringBuffer('ExercisesModelCompanion(')
           ..write('id: $id, ')
           ..write('exerciseTypeId: $exerciseTypeId, ')
           ..write('equipmentId: $equipmentId, ')
@@ -842,11 +843,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
   }
 }
 
-class $ExercisesTable extends Exercises
-    with TableInfo<$ExercisesTable, Exercise> {
+class $ExercisesModelTable extends ExercisesModel
+    with TableInfo<$ExercisesModelTable, ExerciseModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $ExercisesTable(this._db, [this._alias]);
+  $ExercisesModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -905,13 +906,13 @@ class $ExercisesTable extends Exercises
   List<GeneratedColumn> get $columns =>
       [id, exerciseTypeId, equipmentId, i18nName, instructions];
   @override
-  $ExercisesTable get asDslTable => this;
+  $ExercisesModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'exercises';
   @override
   final String actualTableName = 'exercises';
   @override
-  VerificationContext validateIntegrity(Insertable<Exercise> instance,
+  VerificationContext validateIntegrity(Insertable<ExerciseModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -952,26 +953,28 @@ class $ExercisesTable extends Exercises
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Exercise map(Map<String, dynamic> data, {String tablePrefix}) {
+  ExerciseModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Exercise.fromData(data, _db, prefix: effectivePrefix);
+    return ExerciseModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $ExercisesTable createAlias(String alias) {
-    return $ExercisesTable(_db, alias);
+  $ExercisesModelTable createAlias(String alias) {
+    return $ExercisesModelTable(_db, alias);
   }
 }
 
-class ExerciseType extends DataClass implements Insertable<ExerciseType> {
+class ExercisesTypeModel extends DataClass
+    implements Insertable<ExercisesTypeModel> {
   final int id;
   final int i18nName;
-  ExerciseType({@required this.id, @required this.i18nName});
-  factory ExerciseType.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  ExercisesTypeModel({@required this.id, @required this.i18nName});
+  factory ExercisesTypeModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return ExerciseType(
+    return ExercisesTypeModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       i18nName:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}i18n_name']),
@@ -989,8 +992,8 @@ class ExerciseType extends DataClass implements Insertable<ExerciseType> {
     return map;
   }
 
-  ExercisesTypesCompanion toCompanion(bool nullToAbsent) {
-    return ExercisesTypesCompanion(
+  ExercisesTypesModelCompanion toCompanion(bool nullToAbsent) {
+    return ExercisesTypesModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       i18nName: i18nName == null && nullToAbsent
           ? const Value.absent()
@@ -998,10 +1001,10 @@ class ExerciseType extends DataClass implements Insertable<ExerciseType> {
     );
   }
 
-  factory ExerciseType.fromJson(Map<String, dynamic> json,
+  factory ExercisesTypeModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return ExerciseType(
+    return ExercisesTypeModel(
       id: serializer.fromJson<int>(json['id']),
       i18nName: serializer.fromJson<int>(json['i18nName']),
     );
@@ -1015,13 +1018,13 @@ class ExerciseType extends DataClass implements Insertable<ExerciseType> {
     };
   }
 
-  ExerciseType copyWith({int id, int i18nName}) => ExerciseType(
+  ExercisesTypeModel copyWith({int id, int i18nName}) => ExercisesTypeModel(
         id: id ?? this.id,
         i18nName: i18nName ?? this.i18nName,
       );
   @override
   String toString() {
-    return (StringBuffer('ExerciseType(')
+    return (StringBuffer('ExercisesTypeModel(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1033,23 +1036,23 @@ class ExerciseType extends DataClass implements Insertable<ExerciseType> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is ExerciseType &&
+      (other is ExercisesTypeModel &&
           other.id == this.id &&
           other.i18nName == this.i18nName);
 }
 
-class ExercisesTypesCompanion extends UpdateCompanion<ExerciseType> {
+class ExercisesTypesModelCompanion extends UpdateCompanion<ExercisesTypeModel> {
   final Value<int> id;
   final Value<int> i18nName;
-  const ExercisesTypesCompanion({
+  const ExercisesTypesModelCompanion({
     this.id = const Value.absent(),
     this.i18nName = const Value.absent(),
   });
-  ExercisesTypesCompanion.insert({
+  ExercisesTypesModelCompanion.insert({
     this.id = const Value.absent(),
     @required int i18nName,
   }) : i18nName = Value(i18nName);
-  static Insertable<ExerciseType> custom({
+  static Insertable<ExercisesTypeModel> custom({
     Expression<int> id,
     Expression<int> i18nName,
   }) {
@@ -1059,8 +1062,8 @@ class ExercisesTypesCompanion extends UpdateCompanion<ExerciseType> {
     });
   }
 
-  ExercisesTypesCompanion copyWith({Value<int> id, Value<int> i18nName}) {
-    return ExercisesTypesCompanion(
+  ExercisesTypesModelCompanion copyWith({Value<int> id, Value<int> i18nName}) {
+    return ExercisesTypesModelCompanion(
       id: id ?? this.id,
       i18nName: i18nName ?? this.i18nName,
     );
@@ -1080,7 +1083,7 @@ class ExercisesTypesCompanion extends UpdateCompanion<ExerciseType> {
 
   @override
   String toString() {
-    return (StringBuffer('ExercisesTypesCompanion(')
+    return (StringBuffer('ExercisesTypesModelCompanion(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1088,11 +1091,11 @@ class ExercisesTypesCompanion extends UpdateCompanion<ExerciseType> {
   }
 }
 
-class $ExercisesTypesTable extends ExercisesTypes
-    with TableInfo<$ExercisesTypesTable, ExerciseType> {
+class $ExercisesTypesModelTable extends ExercisesTypesModel
+    with TableInfo<$ExercisesTypesModelTable, ExercisesTypeModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $ExercisesTypesTable(this._db, [this._alias]);
+  $ExercisesTypesModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1114,13 +1117,13 @@ class $ExercisesTypesTable extends ExercisesTypes
   @override
   List<GeneratedColumn> get $columns => [id, i18nName];
   @override
-  $ExercisesTypesTable get asDslTable => this;
+  $ExercisesTypesModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'exercises_types';
   @override
   final String actualTableName = 'exercises_types';
   @override
-  VerificationContext validateIntegrity(Insertable<ExerciseType> instance,
+  VerificationContext validateIntegrity(Insertable<ExercisesTypeModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1139,26 +1142,27 @@ class $ExercisesTypesTable extends ExercisesTypes
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ExerciseType map(Map<String, dynamic> data, {String tablePrefix}) {
+  ExercisesTypeModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return ExerciseType.fromData(data, _db, prefix: effectivePrefix);
+    return ExercisesTypeModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $ExercisesTypesTable createAlias(String alias) {
-    return $ExercisesTypesTable(_db, alias);
+  $ExercisesTypesModelTable createAlias(String alias) {
+    return $ExercisesTypesModelTable(_db, alias);
   }
 }
 
-class Equipment extends DataClass implements Insertable<Equipment> {
+class EquipmentModel extends DataClass implements Insertable<EquipmentModel> {
   final int id;
   final int i18nName;
-  Equipment({@required this.id, @required this.i18nName});
-  factory Equipment.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  EquipmentModel({@required this.id, @required this.i18nName});
+  factory EquipmentModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return Equipment(
+    return EquipmentModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       i18nName:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}i18n_name']),
@@ -1176,8 +1180,8 @@ class Equipment extends DataClass implements Insertable<Equipment> {
     return map;
   }
 
-  EquipmentsCompanion toCompanion(bool nullToAbsent) {
-    return EquipmentsCompanion(
+  EquipmentsModelCompanion toCompanion(bool nullToAbsent) {
+    return EquipmentsModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       i18nName: i18nName == null && nullToAbsent
           ? const Value.absent()
@@ -1185,10 +1189,10 @@ class Equipment extends DataClass implements Insertable<Equipment> {
     );
   }
 
-  factory Equipment.fromJson(Map<String, dynamic> json,
+  factory EquipmentModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Equipment(
+    return EquipmentModel(
       id: serializer.fromJson<int>(json['id']),
       i18nName: serializer.fromJson<int>(json['i18nName']),
     );
@@ -1202,13 +1206,13 @@ class Equipment extends DataClass implements Insertable<Equipment> {
     };
   }
 
-  Equipment copyWith({int id, int i18nName}) => Equipment(
+  EquipmentModel copyWith({int id, int i18nName}) => EquipmentModel(
         id: id ?? this.id,
         i18nName: i18nName ?? this.i18nName,
       );
   @override
   String toString() {
-    return (StringBuffer('Equipment(')
+    return (StringBuffer('EquipmentModel(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1220,23 +1224,23 @@ class Equipment extends DataClass implements Insertable<Equipment> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Equipment &&
+      (other is EquipmentModel &&
           other.id == this.id &&
           other.i18nName == this.i18nName);
 }
 
-class EquipmentsCompanion extends UpdateCompanion<Equipment> {
+class EquipmentsModelCompanion extends UpdateCompanion<EquipmentModel> {
   final Value<int> id;
   final Value<int> i18nName;
-  const EquipmentsCompanion({
+  const EquipmentsModelCompanion({
     this.id = const Value.absent(),
     this.i18nName = const Value.absent(),
   });
-  EquipmentsCompanion.insert({
+  EquipmentsModelCompanion.insert({
     this.id = const Value.absent(),
     @required int i18nName,
   }) : i18nName = Value(i18nName);
-  static Insertable<Equipment> custom({
+  static Insertable<EquipmentModel> custom({
     Expression<int> id,
     Expression<int> i18nName,
   }) {
@@ -1246,8 +1250,8 @@ class EquipmentsCompanion extends UpdateCompanion<Equipment> {
     });
   }
 
-  EquipmentsCompanion copyWith({Value<int> id, Value<int> i18nName}) {
-    return EquipmentsCompanion(
+  EquipmentsModelCompanion copyWith({Value<int> id, Value<int> i18nName}) {
+    return EquipmentsModelCompanion(
       id: id ?? this.id,
       i18nName: i18nName ?? this.i18nName,
     );
@@ -1267,7 +1271,7 @@ class EquipmentsCompanion extends UpdateCompanion<Equipment> {
 
   @override
   String toString() {
-    return (StringBuffer('EquipmentsCompanion(')
+    return (StringBuffer('EquipmentsModelCompanion(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1275,11 +1279,11 @@ class EquipmentsCompanion extends UpdateCompanion<Equipment> {
   }
 }
 
-class $EquipmentsTable extends Equipments
-    with TableInfo<$EquipmentsTable, Equipment> {
+class $EquipmentsModelTable extends EquipmentsModel
+    with TableInfo<$EquipmentsModelTable, EquipmentModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $EquipmentsTable(this._db, [this._alias]);
+  $EquipmentsModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1301,13 +1305,13 @@ class $EquipmentsTable extends Equipments
   @override
   List<GeneratedColumn> get $columns => [id, i18nName];
   @override
-  $EquipmentsTable get asDslTable => this;
+  $EquipmentsModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'equipments';
   @override
   final String actualTableName = 'equipments';
   @override
-  VerificationContext validateIntegrity(Insertable<Equipment> instance,
+  VerificationContext validateIntegrity(Insertable<EquipmentModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1326,27 +1330,28 @@ class $EquipmentsTable extends Equipments
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Equipment map(Map<String, dynamic> data, {String tablePrefix}) {
+  EquipmentModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Equipment.fromData(data, _db, prefix: effectivePrefix);
+    return EquipmentModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $EquipmentsTable createAlias(String alias) {
-    return $EquipmentsTable(_db, alias);
+  $EquipmentsModelTable createAlias(String alias) {
+    return $EquipmentsModelTable(_db, alias);
   }
 }
 
-class ExercisesMuscle extends DataClass implements Insertable<ExercisesMuscle> {
+class ExercisesMuscleModel extends DataClass
+    implements Insertable<ExercisesMuscleModel> {
   final int exerciseId;
   final int muscleId;
-  ExercisesMuscle({@required this.exerciseId, @required this.muscleId});
-  factory ExercisesMuscle.fromData(
+  ExercisesMuscleModel({@required this.exerciseId, @required this.muscleId});
+  factory ExercisesMuscleModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return ExercisesMuscle(
+    return ExercisesMuscleModel(
       exerciseId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}exercise_id']),
       muscleId:
@@ -1365,8 +1370,8 @@ class ExercisesMuscle extends DataClass implements Insertable<ExercisesMuscle> {
     return map;
   }
 
-  ExercisesMusclesCompanion toCompanion(bool nullToAbsent) {
-    return ExercisesMusclesCompanion(
+  ExercisesMusclesModelCompanion toCompanion(bool nullToAbsent) {
+    return ExercisesMusclesModelCompanion(
       exerciseId: exerciseId == null && nullToAbsent
           ? const Value.absent()
           : Value(exerciseId),
@@ -1376,10 +1381,10 @@ class ExercisesMuscle extends DataClass implements Insertable<ExercisesMuscle> {
     );
   }
 
-  factory ExercisesMuscle.fromJson(Map<String, dynamic> json,
+  factory ExercisesMuscleModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return ExercisesMuscle(
+    return ExercisesMuscleModel(
       exerciseId: serializer.fromJson<int>(json['exerciseId']),
       muscleId: serializer.fromJson<int>(json['muscleId']),
     );
@@ -1393,13 +1398,14 @@ class ExercisesMuscle extends DataClass implements Insertable<ExercisesMuscle> {
     };
   }
 
-  ExercisesMuscle copyWith({int exerciseId, int muscleId}) => ExercisesMuscle(
+  ExercisesMuscleModel copyWith({int exerciseId, int muscleId}) =>
+      ExercisesMuscleModel(
         exerciseId: exerciseId ?? this.exerciseId,
         muscleId: muscleId ?? this.muscleId,
       );
   @override
   String toString() {
-    return (StringBuffer('ExercisesMuscle(')
+    return (StringBuffer('ExercisesMuscleModel(')
           ..write('exerciseId: $exerciseId, ')
           ..write('muscleId: $muscleId')
           ..write(')'))
@@ -1411,24 +1417,25 @@ class ExercisesMuscle extends DataClass implements Insertable<ExercisesMuscle> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is ExercisesMuscle &&
+      (other is ExercisesMuscleModel &&
           other.exerciseId == this.exerciseId &&
           other.muscleId == this.muscleId);
 }
 
-class ExercisesMusclesCompanion extends UpdateCompanion<ExercisesMuscle> {
+class ExercisesMusclesModelCompanion
+    extends UpdateCompanion<ExercisesMuscleModel> {
   final Value<int> exerciseId;
   final Value<int> muscleId;
-  const ExercisesMusclesCompanion({
+  const ExercisesMusclesModelCompanion({
     this.exerciseId = const Value.absent(),
     this.muscleId = const Value.absent(),
   });
-  ExercisesMusclesCompanion.insert({
+  ExercisesMusclesModelCompanion.insert({
     @required int exerciseId,
     @required int muscleId,
   })  : exerciseId = Value(exerciseId),
         muscleId = Value(muscleId);
-  static Insertable<ExercisesMuscle> custom({
+  static Insertable<ExercisesMuscleModel> custom({
     Expression<int> exerciseId,
     Expression<int> muscleId,
   }) {
@@ -1438,9 +1445,9 @@ class ExercisesMusclesCompanion extends UpdateCompanion<ExercisesMuscle> {
     });
   }
 
-  ExercisesMusclesCompanion copyWith(
+  ExercisesMusclesModelCompanion copyWith(
       {Value<int> exerciseId, Value<int> muscleId}) {
-    return ExercisesMusclesCompanion(
+    return ExercisesMusclesModelCompanion(
       exerciseId: exerciseId ?? this.exerciseId,
       muscleId: muscleId ?? this.muscleId,
     );
@@ -1460,7 +1467,7 @@ class ExercisesMusclesCompanion extends UpdateCompanion<ExercisesMuscle> {
 
   @override
   String toString() {
-    return (StringBuffer('ExercisesMusclesCompanion(')
+    return (StringBuffer('ExercisesMusclesModelCompanion(')
           ..write('exerciseId: $exerciseId, ')
           ..write('muscleId: $muscleId')
           ..write(')'))
@@ -1468,11 +1475,11 @@ class ExercisesMusclesCompanion extends UpdateCompanion<ExercisesMuscle> {
   }
 }
 
-class $ExercisesMusclesTable extends ExercisesMuscles
-    with TableInfo<$ExercisesMusclesTable, ExercisesMuscle> {
+class $ExercisesMusclesModelTable extends ExercisesMusclesModel
+    with TableInfo<$ExercisesMusclesModelTable, ExercisesMuscleModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $ExercisesMusclesTable(this._db, [this._alias]);
+  $ExercisesMusclesModelTable(this._db, [this._alias]);
   final VerificationMeta _exerciseIdMeta = const VerificationMeta('exerciseId');
   GeneratedIntColumn _exerciseId;
   @override
@@ -1494,13 +1501,14 @@ class $ExercisesMusclesTable extends ExercisesMuscles
   @override
   List<GeneratedColumn> get $columns => [exerciseId, muscleId];
   @override
-  $ExercisesMusclesTable get asDslTable => this;
+  $ExercisesMusclesModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'exercises_muscles';
   @override
   final String actualTableName = 'exercises_muscles';
   @override
-  VerificationContext validateIntegrity(Insertable<ExercisesMuscle> instance,
+  VerificationContext validateIntegrity(
+      Insertable<ExercisesMuscleModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1524,26 +1532,26 @@ class $ExercisesMusclesTable extends ExercisesMuscles
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
-  ExercisesMuscle map(Map<String, dynamic> data, {String tablePrefix}) {
+  ExercisesMuscleModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return ExercisesMuscle.fromData(data, _db, prefix: effectivePrefix);
+    return ExercisesMuscleModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $ExercisesMusclesTable createAlias(String alias) {
-    return $ExercisesMusclesTable(_db, alias);
+  $ExercisesMusclesModelTable createAlias(String alias) {
+    return $ExercisesMusclesModelTable(_db, alias);
   }
 }
 
-class Muscle extends DataClass implements Insertable<Muscle> {
+class MuscleModel extends DataClass implements Insertable<MuscleModel> {
   final int id;
   final int i18nName;
-  Muscle({@required this.id, @required this.i18nName});
-  factory Muscle.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  MuscleModel({@required this.id, @required this.i18nName});
+  factory MuscleModel.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return Muscle(
+    return MuscleModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       i18nName:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}i18n_name']),
@@ -1561,8 +1569,8 @@ class Muscle extends DataClass implements Insertable<Muscle> {
     return map;
   }
 
-  MusclesCompanion toCompanion(bool nullToAbsent) {
-    return MusclesCompanion(
+  MusclesModelCompanion toCompanion(bool nullToAbsent) {
+    return MusclesModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       i18nName: i18nName == null && nullToAbsent
           ? const Value.absent()
@@ -1570,10 +1578,10 @@ class Muscle extends DataClass implements Insertable<Muscle> {
     );
   }
 
-  factory Muscle.fromJson(Map<String, dynamic> json,
+  factory MuscleModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Muscle(
+    return MuscleModel(
       id: serializer.fromJson<int>(json['id']),
       i18nName: serializer.fromJson<int>(json['i18nName']),
     );
@@ -1587,13 +1595,13 @@ class Muscle extends DataClass implements Insertable<Muscle> {
     };
   }
 
-  Muscle copyWith({int id, int i18nName}) => Muscle(
+  MuscleModel copyWith({int id, int i18nName}) => MuscleModel(
         id: id ?? this.id,
         i18nName: i18nName ?? this.i18nName,
       );
   @override
   String toString() {
-    return (StringBuffer('Muscle(')
+    return (StringBuffer('MuscleModel(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1605,23 +1613,23 @@ class Muscle extends DataClass implements Insertable<Muscle> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Muscle &&
+      (other is MuscleModel &&
           other.id == this.id &&
           other.i18nName == this.i18nName);
 }
 
-class MusclesCompanion extends UpdateCompanion<Muscle> {
+class MusclesModelCompanion extends UpdateCompanion<MuscleModel> {
   final Value<int> id;
   final Value<int> i18nName;
-  const MusclesCompanion({
+  const MusclesModelCompanion({
     this.id = const Value.absent(),
     this.i18nName = const Value.absent(),
   });
-  MusclesCompanion.insert({
+  MusclesModelCompanion.insert({
     this.id = const Value.absent(),
     @required int i18nName,
   }) : i18nName = Value(i18nName);
-  static Insertable<Muscle> custom({
+  static Insertable<MuscleModel> custom({
     Expression<int> id,
     Expression<int> i18nName,
   }) {
@@ -1631,8 +1639,8 @@ class MusclesCompanion extends UpdateCompanion<Muscle> {
     });
   }
 
-  MusclesCompanion copyWith({Value<int> id, Value<int> i18nName}) {
-    return MusclesCompanion(
+  MusclesModelCompanion copyWith({Value<int> id, Value<int> i18nName}) {
+    return MusclesModelCompanion(
       id: id ?? this.id,
       i18nName: i18nName ?? this.i18nName,
     );
@@ -1652,7 +1660,7 @@ class MusclesCompanion extends UpdateCompanion<Muscle> {
 
   @override
   String toString() {
-    return (StringBuffer('MusclesCompanion(')
+    return (StringBuffer('MusclesModelCompanion(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -1660,10 +1668,11 @@ class MusclesCompanion extends UpdateCompanion<Muscle> {
   }
 }
 
-class $MusclesTable extends Muscles with TableInfo<$MusclesTable, Muscle> {
+class $MusclesModelTable extends MusclesModel
+    with TableInfo<$MusclesModelTable, MuscleModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $MusclesTable(this._db, [this._alias]);
+  $MusclesModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1685,13 +1694,13 @@ class $MusclesTable extends Muscles with TableInfo<$MusclesTable, Muscle> {
   @override
   List<GeneratedColumn> get $columns => [id, i18nName];
   @override
-  $MusclesTable get asDslTable => this;
+  $MusclesModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'muscles';
   @override
   final String actualTableName = 'muscles';
   @override
-  VerificationContext validateIntegrity(Insertable<Muscle> instance,
+  VerificationContext validateIntegrity(Insertable<MuscleModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1710,29 +1719,29 @@ class $MusclesTable extends Muscles with TableInfo<$MusclesTable, Muscle> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Muscle map(Map<String, dynamic> data, {String tablePrefix}) {
+  MuscleModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Muscle.fromData(data, _db, prefix: effectivePrefix);
+    return MuscleModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $MusclesTable createAlias(String alias) {
-    return $MusclesTable(_db, alias);
+  $MusclesModelTable createAlias(String alias) {
+    return $MusclesModelTable(_db, alias);
   }
 }
 
-class Session extends DataClass implements Insertable<Session> {
+class SessionModel extends DataClass implements Insertable<SessionModel> {
   final int id;
   final DateTime startedAt;
   final DateTime finishedAt;
-  Session(
+  SessionModel(
       {@required this.id, @required this.startedAt, @required this.finishedAt});
-  factory Session.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory SessionModel.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return Session(
+    return SessionModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       startedAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}started_at']),
@@ -1755,8 +1764,8 @@ class Session extends DataClass implements Insertable<Session> {
     return map;
   }
 
-  SessionsCompanion toCompanion(bool nullToAbsent) {
-    return SessionsCompanion(
+  SessionsModelCompanion toCompanion(bool nullToAbsent) {
+    return SessionsModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       startedAt: startedAt == null && nullToAbsent
           ? const Value.absent()
@@ -1767,10 +1776,10 @@ class Session extends DataClass implements Insertable<Session> {
     );
   }
 
-  factory Session.fromJson(Map<String, dynamic> json,
+  factory SessionModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Session(
+    return SessionModel(
       id: serializer.fromJson<int>(json['id']),
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       finishedAt: serializer.fromJson<DateTime>(json['finishedAt']),
@@ -1786,15 +1795,15 @@ class Session extends DataClass implements Insertable<Session> {
     };
   }
 
-  Session copyWith({int id, DateTime startedAt, DateTime finishedAt}) =>
-      Session(
+  SessionModel copyWith({int id, DateTime startedAt, DateTime finishedAt}) =>
+      SessionModel(
         id: id ?? this.id,
         startedAt: startedAt ?? this.startedAt,
         finishedAt: finishedAt ?? this.finishedAt,
       );
   @override
   String toString() {
-    return (StringBuffer('Session(')
+    return (StringBuffer('SessionModel(')
           ..write('id: $id, ')
           ..write('startedAt: $startedAt, ')
           ..write('finishedAt: $finishedAt')
@@ -1808,28 +1817,28 @@ class Session extends DataClass implements Insertable<Session> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Session &&
+      (other is SessionModel &&
           other.id == this.id &&
           other.startedAt == this.startedAt &&
           other.finishedAt == this.finishedAt);
 }
 
-class SessionsCompanion extends UpdateCompanion<Session> {
+class SessionsModelCompanion extends UpdateCompanion<SessionModel> {
   final Value<int> id;
   final Value<DateTime> startedAt;
   final Value<DateTime> finishedAt;
-  const SessionsCompanion({
+  const SessionsModelCompanion({
     this.id = const Value.absent(),
     this.startedAt = const Value.absent(),
     this.finishedAt = const Value.absent(),
   });
-  SessionsCompanion.insert({
+  SessionsModelCompanion.insert({
     this.id = const Value.absent(),
     @required DateTime startedAt,
     @required DateTime finishedAt,
   })  : startedAt = Value(startedAt),
         finishedAt = Value(finishedAt);
-  static Insertable<Session> custom({
+  static Insertable<SessionModel> custom({
     Expression<int> id,
     Expression<DateTime> startedAt,
     Expression<DateTime> finishedAt,
@@ -1841,9 +1850,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     });
   }
 
-  SessionsCompanion copyWith(
+  SessionsModelCompanion copyWith(
       {Value<int> id, Value<DateTime> startedAt, Value<DateTime> finishedAt}) {
-    return SessionsCompanion(
+    return SessionsModelCompanion(
       id: id ?? this.id,
       startedAt: startedAt ?? this.startedAt,
       finishedAt: finishedAt ?? this.finishedAt,
@@ -1867,7 +1876,7 @@ class SessionsCompanion extends UpdateCompanion<Session> {
 
   @override
   String toString() {
-    return (StringBuffer('SessionsCompanion(')
+    return (StringBuffer('SessionsModelCompanion(')
           ..write('id: $id, ')
           ..write('startedAt: $startedAt, ')
           ..write('finishedAt: $finishedAt')
@@ -1876,10 +1885,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
   }
 }
 
-class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
+class $SessionsModelTable extends SessionsModel
+    with TableInfo<$SessionsModelTable, SessionModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $SessionsTable(this._db, [this._alias]);
+  $SessionsModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1917,13 +1927,13 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
   @override
   List<GeneratedColumn> get $columns => [id, startedAt, finishedAt];
   @override
-  $SessionsTable get asDslTable => this;
+  $SessionsModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'sessions';
   @override
   final String actualTableName = 'sessions';
   @override
-  VerificationContext validateIntegrity(Insertable<Session> instance,
+  VerificationContext validateIntegrity(Insertable<SessionModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1950,18 +1960,19 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Session map(Map<String, dynamic> data, {String tablePrefix}) {
+  SessionModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Session.fromData(data, _db, prefix: effectivePrefix);
+    return SessionModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $SessionsTable createAlias(String alias) {
-    return $SessionsTable(_db, alias);
+  $SessionsModelTable createAlias(String alias) {
+    return $SessionsModelTable(_db, alias);
   }
 }
 
-class SessionItem extends DataClass implements Insertable<SessionItem> {
+class SessionItemModel extends DataClass
+    implements Insertable<SessionItemModel> {
   final int id;
   final int sessionId;
   final int exerciseId;
@@ -1971,7 +1982,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
   final int groupNumber;
   final double weight;
   final double duration;
-  SessionItem(
+  SessionItemModel(
       {@required this.id,
       @required this.sessionId,
       @required this.exerciseId,
@@ -1981,12 +1992,13 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
       this.groupNumber,
       @required this.weight,
       this.duration});
-  factory SessionItem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory SessionItemModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final doubleType = db.typeSystem.forDartType<double>();
-    return SessionItem(
+    return SessionItemModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       sessionId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}session_id']),
@@ -2038,8 +2050,8 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
     return map;
   }
 
-  SessionItemsCompanion toCompanion(bool nullToAbsent) {
-    return SessionItemsCompanion(
+  SessionItemsModelCompanion toCompanion(bool nullToAbsent) {
+    return SessionItemsModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       sessionId: sessionId == null && nullToAbsent
           ? const Value.absent()
@@ -2066,10 +2078,10 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
     );
   }
 
-  factory SessionItem.fromJson(Map<String, dynamic> json,
+  factory SessionItemModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return SessionItem(
+    return SessionItemModel(
       id: serializer.fromJson<int>(json['id']),
       sessionId: serializer.fromJson<int>(json['sessionId']),
       exerciseId: serializer.fromJson<int>(json['exerciseId']),
@@ -2097,7 +2109,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
     };
   }
 
-  SessionItem copyWith(
+  SessionItemModel copyWith(
           {int id,
           int sessionId,
           int exerciseId,
@@ -2107,7 +2119,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
           int groupNumber,
           double weight,
           double duration}) =>
-      SessionItem(
+      SessionItemModel(
         id: id ?? this.id,
         sessionId: sessionId ?? this.sessionId,
         exerciseId: exerciseId ?? this.exerciseId,
@@ -2120,7 +2132,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
       );
   @override
   String toString() {
-    return (StringBuffer('SessionItem(')
+    return (StringBuffer('SessionItemModel(')
           ..write('id: $id, ')
           ..write('sessionId: $sessionId, ')
           ..write('exerciseId: $exerciseId, ')
@@ -2152,7 +2164,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is SessionItem &&
+      (other is SessionItemModel &&
           other.id == this.id &&
           other.sessionId == this.sessionId &&
           other.exerciseId == this.exerciseId &&
@@ -2164,7 +2176,7 @@ class SessionItem extends DataClass implements Insertable<SessionItem> {
           other.duration == this.duration);
 }
 
-class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
+class SessionItemsModelCompanion extends UpdateCompanion<SessionItemModel> {
   final Value<int> id;
   final Value<int> sessionId;
   final Value<int> exerciseId;
@@ -2174,7 +2186,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
   final Value<int> groupNumber;
   final Value<double> weight;
   final Value<double> duration;
-  const SessionItemsCompanion({
+  const SessionItemsModelCompanion({
     this.id = const Value.absent(),
     this.sessionId = const Value.absent(),
     this.exerciseId = const Value.absent(),
@@ -2185,7 +2197,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
     this.weight = const Value.absent(),
     this.duration = const Value.absent(),
   });
-  SessionItemsCompanion.insert({
+  SessionItemsModelCompanion.insert({
     this.id = const Value.absent(),
     @required int sessionId,
     @required int exerciseId,
@@ -2201,7 +2213,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
         order = Value(order),
         repetitions = Value(repetitions),
         weight = Value(weight);
-  static Insertable<SessionItem> custom({
+  static Insertable<SessionItemModel> custom({
     Expression<int> id,
     Expression<int> sessionId,
     Expression<int> exerciseId,
@@ -2225,7 +2237,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
     });
   }
 
-  SessionItemsCompanion copyWith(
+  SessionItemsModelCompanion copyWith(
       {Value<int> id,
       Value<int> sessionId,
       Value<int> exerciseId,
@@ -2235,7 +2247,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
       Value<int> groupNumber,
       Value<double> weight,
       Value<double> duration}) {
-    return SessionItemsCompanion(
+    return SessionItemsModelCompanion(
       id: id ?? this.id,
       sessionId: sessionId ?? this.sessionId,
       exerciseId: exerciseId ?? this.exerciseId,
@@ -2283,7 +2295,7 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
 
   @override
   String toString() {
-    return (StringBuffer('SessionItemsCompanion(')
+    return (StringBuffer('SessionItemsModelCompanion(')
           ..write('id: $id, ')
           ..write('sessionId: $sessionId, ')
           ..write('exerciseId: $exerciseId, ')
@@ -2298,11 +2310,11 @@ class SessionItemsCompanion extends UpdateCompanion<SessionItem> {
   }
 }
 
-class $SessionItemsTable extends SessionItems
-    with TableInfo<$SessionItemsTable, SessionItem> {
+class $SessionItemsModelTable extends SessionItemsModel
+    with TableInfo<$SessionItemsModelTable, SessionItemModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $SessionItemsTable(this._db, [this._alias]);
+  $SessionItemsModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2418,13 +2430,13 @@ class $SessionItemsTable extends SessionItems
         duration
       ];
   @override
-  $SessionItemsTable get asDslTable => this;
+  $SessionItemsModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'session_items';
   @override
   final String actualTableName = 'session_items';
   @override
-  VerificationContext validateIntegrity(Insertable<SessionItem> instance,
+  VerificationContext validateIntegrity(Insertable<SessionItemModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2489,26 +2501,27 @@ class $SessionItemsTable extends SessionItems
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SessionItem map(Map<String, dynamic> data, {String tablePrefix}) {
+  SessionItemModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return SessionItem.fromData(data, _db, prefix: effectivePrefix);
+    return SessionItemModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $SessionItemsTable createAlias(String alias) {
-    return $SessionItemsTable(_db, alias);
+  $SessionItemsModelTable createAlias(String alias) {
+    return $SessionItemsModelTable(_db, alias);
   }
 }
 
-class UnitSystem extends DataClass implements Insertable<UnitSystem> {
+class UnitSystemModel extends DataClass implements Insertable<UnitSystemModel> {
   final int id;
   final int i18nName;
-  UnitSystem({@required this.id, @required this.i18nName});
-  factory UnitSystem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  UnitSystemModel({@required this.id, @required this.i18nName});
+  factory UnitSystemModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return UnitSystem(
+    return UnitSystemModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       i18nName:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}i18n_name']),
@@ -2526,8 +2539,8 @@ class UnitSystem extends DataClass implements Insertable<UnitSystem> {
     return map;
   }
 
-  UnitSystemsCompanion toCompanion(bool nullToAbsent) {
-    return UnitSystemsCompanion(
+  UnitSystemsModelCompanion toCompanion(bool nullToAbsent) {
+    return UnitSystemsModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       i18nName: i18nName == null && nullToAbsent
           ? const Value.absent()
@@ -2535,10 +2548,10 @@ class UnitSystem extends DataClass implements Insertable<UnitSystem> {
     );
   }
 
-  factory UnitSystem.fromJson(Map<String, dynamic> json,
+  factory UnitSystemModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return UnitSystem(
+    return UnitSystemModel(
       id: serializer.fromJson<int>(json['id']),
       i18nName: serializer.fromJson<int>(json['i18nName']),
     );
@@ -2552,13 +2565,13 @@ class UnitSystem extends DataClass implements Insertable<UnitSystem> {
     };
   }
 
-  UnitSystem copyWith({int id, int i18nName}) => UnitSystem(
+  UnitSystemModel copyWith({int id, int i18nName}) => UnitSystemModel(
         id: id ?? this.id,
         i18nName: i18nName ?? this.i18nName,
       );
   @override
   String toString() {
-    return (StringBuffer('UnitSystem(')
+    return (StringBuffer('UnitSystemModel(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -2570,23 +2583,23 @@ class UnitSystem extends DataClass implements Insertable<UnitSystem> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is UnitSystem &&
+      (other is UnitSystemModel &&
           other.id == this.id &&
           other.i18nName == this.i18nName);
 }
 
-class UnitSystemsCompanion extends UpdateCompanion<UnitSystem> {
+class UnitSystemsModelCompanion extends UpdateCompanion<UnitSystemModel> {
   final Value<int> id;
   final Value<int> i18nName;
-  const UnitSystemsCompanion({
+  const UnitSystemsModelCompanion({
     this.id = const Value.absent(),
     this.i18nName = const Value.absent(),
   });
-  UnitSystemsCompanion.insert({
+  UnitSystemsModelCompanion.insert({
     this.id = const Value.absent(),
     @required int i18nName,
   }) : i18nName = Value(i18nName);
-  static Insertable<UnitSystem> custom({
+  static Insertable<UnitSystemModel> custom({
     Expression<int> id,
     Expression<int> i18nName,
   }) {
@@ -2596,8 +2609,8 @@ class UnitSystemsCompanion extends UpdateCompanion<UnitSystem> {
     });
   }
 
-  UnitSystemsCompanion copyWith({Value<int> id, Value<int> i18nName}) {
-    return UnitSystemsCompanion(
+  UnitSystemsModelCompanion copyWith({Value<int> id, Value<int> i18nName}) {
+    return UnitSystemsModelCompanion(
       id: id ?? this.id,
       i18nName: i18nName ?? this.i18nName,
     );
@@ -2617,7 +2630,7 @@ class UnitSystemsCompanion extends UpdateCompanion<UnitSystem> {
 
   @override
   String toString() {
-    return (StringBuffer('UnitSystemsCompanion(')
+    return (StringBuffer('UnitSystemsModelCompanion(')
           ..write('id: $id, ')
           ..write('i18nName: $i18nName')
           ..write(')'))
@@ -2625,11 +2638,11 @@ class UnitSystemsCompanion extends UpdateCompanion<UnitSystem> {
   }
 }
 
-class $UnitSystemsTable extends UnitSystems
-    with TableInfo<$UnitSystemsTable, UnitSystem> {
+class $UnitSystemsModelTable extends UnitSystemsModel
+    with TableInfo<$UnitSystemsModelTable, UnitSystemModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $UnitSystemsTable(this._db, [this._alias]);
+  $UnitSystemsModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2651,13 +2664,13 @@ class $UnitSystemsTable extends UnitSystems
   @override
   List<GeneratedColumn> get $columns => [id, i18nName];
   @override
-  $UnitSystemsTable get asDslTable => this;
+  $UnitSystemsModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'unit_systems';
   @override
   final String actualTableName = 'unit_systems';
   @override
-  VerificationContext validateIntegrity(Insertable<UnitSystem> instance,
+  VerificationContext validateIntegrity(Insertable<UnitSystemModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2676,29 +2689,30 @@ class $UnitSystemsTable extends UnitSystems
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  UnitSystem map(Map<String, dynamic> data, {String tablePrefix}) {
+  UnitSystemModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return UnitSystem.fromData(data, _db, prefix: effectivePrefix);
+    return UnitSystemModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $UnitSystemsTable createAlias(String alias) {
-    return $UnitSystemsTable(_db, alias);
+  $UnitSystemsModelTable createAlias(String alias) {
+    return $UnitSystemsModelTable(_db, alias);
   }
 }
 
-class Routine extends DataClass implements Insertable<Routine> {
+class RoutineModel extends DataClass implements Insertable<RoutineModel> {
   final int id;
   final String name;
   final bool current;
-  Routine({@required this.id, @required this.name, @required this.current});
-  factory Routine.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  RoutineModel(
+      {@required this.id, @required this.name, @required this.current});
+  factory RoutineModel.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return Routine(
+    return RoutineModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       current:
@@ -2720,8 +2734,8 @@ class Routine extends DataClass implements Insertable<Routine> {
     return map;
   }
 
-  RoutinesCompanion toCompanion(bool nullToAbsent) {
-    return RoutinesCompanion(
+  RoutinesModelCompanion toCompanion(bool nullToAbsent) {
+    return RoutinesModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       current: current == null && nullToAbsent
@@ -2730,10 +2744,10 @@ class Routine extends DataClass implements Insertable<Routine> {
     );
   }
 
-  factory Routine.fromJson(Map<String, dynamic> json,
+  factory RoutineModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Routine(
+    return RoutineModel(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       current: serializer.fromJson<bool>(json['current']),
@@ -2749,14 +2763,14 @@ class Routine extends DataClass implements Insertable<Routine> {
     };
   }
 
-  Routine copyWith({int id, String name, bool current}) => Routine(
+  RoutineModel copyWith({int id, String name, bool current}) => RoutineModel(
         id: id ?? this.id,
         name: name ?? this.name,
         current: current ?? this.current,
       );
   @override
   String toString() {
-    return (StringBuffer('Routine(')
+    return (StringBuffer('RoutineModel(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('current: $current')
@@ -2770,27 +2784,27 @@ class Routine extends DataClass implements Insertable<Routine> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Routine &&
+      (other is RoutineModel &&
           other.id == this.id &&
           other.name == this.name &&
           other.current == this.current);
 }
 
-class RoutinesCompanion extends UpdateCompanion<Routine> {
+class RoutinesModelCompanion extends UpdateCompanion<RoutineModel> {
   final Value<int> id;
   final Value<String> name;
   final Value<bool> current;
-  const RoutinesCompanion({
+  const RoutinesModelCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.current = const Value.absent(),
   });
-  RoutinesCompanion.insert({
+  RoutinesModelCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
     this.current = const Value.absent(),
   }) : name = Value(name);
-  static Insertable<Routine> custom({
+  static Insertable<RoutineModel> custom({
     Expression<int> id,
     Expression<String> name,
     Expression<bool> current,
@@ -2802,9 +2816,9 @@ class RoutinesCompanion extends UpdateCompanion<Routine> {
     });
   }
 
-  RoutinesCompanion copyWith(
+  RoutinesModelCompanion copyWith(
       {Value<int> id, Value<String> name, Value<bool> current}) {
-    return RoutinesCompanion(
+    return RoutinesModelCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       current: current ?? this.current,
@@ -2828,7 +2842,7 @@ class RoutinesCompanion extends UpdateCompanion<Routine> {
 
   @override
   String toString() {
-    return (StringBuffer('RoutinesCompanion(')
+    return (StringBuffer('RoutinesModelCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('current: $current')
@@ -2837,10 +2851,11 @@ class RoutinesCompanion extends UpdateCompanion<Routine> {
   }
 }
 
-class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
+class $RoutinesModelTable extends RoutinesModel
+    with TableInfo<$RoutinesModelTable, RoutineModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $RoutinesTable(this._db, [this._alias]);
+  $RoutinesModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2874,13 +2889,13 @@ class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
   @override
   List<GeneratedColumn> get $columns => [id, name, current];
   @override
-  $RoutinesTable get asDslTable => this;
+  $RoutinesModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'routines';
   @override
   final String actualTableName = 'routines';
   @override
-  VerificationContext validateIntegrity(Insertable<Routine> instance,
+  VerificationContext validateIntegrity(Insertable<RoutineModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2903,33 +2918,34 @@ class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Routine map(Map<String, dynamic> data, {String tablePrefix}) {
+  RoutineModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Routine.fromData(data, _db, prefix: effectivePrefix);
+    return RoutineModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $RoutinesTable createAlias(String alias) {
-    return $RoutinesTable(_db, alias);
+  $RoutinesModelTable createAlias(String alias) {
+    return $RoutinesModelTable(_db, alias);
   }
 }
 
-class RoutineDay extends DataClass implements Insertable<RoutineDay> {
+class RoutineDayModel extends DataClass implements Insertable<RoutineDayModel> {
   final int id;
   final int routineId;
   final String name;
   final int order;
-  RoutineDay(
+  RoutineDayModel(
       {@required this.id,
       @required this.routineId,
       @required this.name,
       @required this.order});
-  factory RoutineDay.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory RoutineDayModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return RoutineDay(
+    return RoutineDayModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       routineId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}routine_id']),
@@ -2955,8 +2971,8 @@ class RoutineDay extends DataClass implements Insertable<RoutineDay> {
     return map;
   }
 
-  RoutineDaysCompanion toCompanion(bool nullToAbsent) {
-    return RoutineDaysCompanion(
+  RoutineDaysModelCompanion toCompanion(bool nullToAbsent) {
+    return RoutineDaysModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       routineId: routineId == null && nullToAbsent
           ? const Value.absent()
@@ -2967,10 +2983,10 @@ class RoutineDay extends DataClass implements Insertable<RoutineDay> {
     );
   }
 
-  factory RoutineDay.fromJson(Map<String, dynamic> json,
+  factory RoutineDayModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return RoutineDay(
+    return RoutineDayModel(
       id: serializer.fromJson<int>(json['id']),
       routineId: serializer.fromJson<int>(json['routineId']),
       name: serializer.fromJson<String>(json['name']),
@@ -2988,8 +3004,8 @@ class RoutineDay extends DataClass implements Insertable<RoutineDay> {
     };
   }
 
-  RoutineDay copyWith({int id, int routineId, String name, int order}) =>
-      RoutineDay(
+  RoutineDayModel copyWith({int id, int routineId, String name, int order}) =>
+      RoutineDayModel(
         id: id ?? this.id,
         routineId: routineId ?? this.routineId,
         name: name ?? this.name,
@@ -2997,7 +3013,7 @@ class RoutineDay extends DataClass implements Insertable<RoutineDay> {
       );
   @override
   String toString() {
-    return (StringBuffer('RoutineDay(')
+    return (StringBuffer('RoutineDayModel(')
           ..write('id: $id, ')
           ..write('routineId: $routineId, ')
           ..write('name: $name, ')
@@ -3012,25 +3028,25 @@ class RoutineDay extends DataClass implements Insertable<RoutineDay> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is RoutineDay &&
+      (other is RoutineDayModel &&
           other.id == this.id &&
           other.routineId == this.routineId &&
           other.name == this.name &&
           other.order == this.order);
 }
 
-class RoutineDaysCompanion extends UpdateCompanion<RoutineDay> {
+class RoutineDaysModelCompanion extends UpdateCompanion<RoutineDayModel> {
   final Value<int> id;
   final Value<int> routineId;
   final Value<String> name;
   final Value<int> order;
-  const RoutineDaysCompanion({
+  const RoutineDaysModelCompanion({
     this.id = const Value.absent(),
     this.routineId = const Value.absent(),
     this.name = const Value.absent(),
     this.order = const Value.absent(),
   });
-  RoutineDaysCompanion.insert({
+  RoutineDaysModelCompanion.insert({
     this.id = const Value.absent(),
     @required int routineId,
     @required String name,
@@ -3038,7 +3054,7 @@ class RoutineDaysCompanion extends UpdateCompanion<RoutineDay> {
   })  : routineId = Value(routineId),
         name = Value(name),
         order = Value(order);
-  static Insertable<RoutineDay> custom({
+  static Insertable<RoutineDayModel> custom({
     Expression<int> id,
     Expression<int> routineId,
     Expression<String> name,
@@ -3052,12 +3068,12 @@ class RoutineDaysCompanion extends UpdateCompanion<RoutineDay> {
     });
   }
 
-  RoutineDaysCompanion copyWith(
+  RoutineDaysModelCompanion copyWith(
       {Value<int> id,
       Value<int> routineId,
       Value<String> name,
       Value<int> order}) {
-    return RoutineDaysCompanion(
+    return RoutineDaysModelCompanion(
       id: id ?? this.id,
       routineId: routineId ?? this.routineId,
       name: name ?? this.name,
@@ -3085,7 +3101,7 @@ class RoutineDaysCompanion extends UpdateCompanion<RoutineDay> {
 
   @override
   String toString() {
-    return (StringBuffer('RoutineDaysCompanion(')
+    return (StringBuffer('RoutineDaysModelCompanion(')
           ..write('id: $id, ')
           ..write('routineId: $routineId, ')
           ..write('name: $name, ')
@@ -3095,11 +3111,11 @@ class RoutineDaysCompanion extends UpdateCompanion<RoutineDay> {
   }
 }
 
-class $RoutineDaysTable extends RoutineDays
-    with TableInfo<$RoutineDaysTable, RoutineDay> {
+class $RoutineDaysModelTable extends RoutineDaysModel
+    with TableInfo<$RoutineDaysModelTable, RoutineDayModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $RoutineDaysTable(this._db, [this._alias]);
+  $RoutineDaysModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -3145,13 +3161,13 @@ class $RoutineDaysTable extends RoutineDays
   @override
   List<GeneratedColumn> get $columns => [id, routineId, name, order];
   @override
-  $RoutineDaysTable get asDslTable => this;
+  $RoutineDaysModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'routine_days';
   @override
   final String actualTableName = 'routine_days';
   @override
-  VerificationContext validateIntegrity(Insertable<RoutineDay> instance,
+  VerificationContext validateIntegrity(Insertable<RoutineDayModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3182,18 +3198,19 @@ class $RoutineDaysTable extends RoutineDays
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  RoutineDay map(Map<String, dynamic> data, {String tablePrefix}) {
+  RoutineDayModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return RoutineDay.fromData(data, _db, prefix: effectivePrefix);
+    return RoutineDayModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $RoutineDaysTable createAlias(String alias) {
-    return $RoutineDaysTable(_db, alias);
+  $RoutineDaysModelTable createAlias(String alias) {
+    return $RoutineDaysModelTable(_db, alias);
   }
 }
 
-class RoutineItem extends DataClass implements Insertable<RoutineItem> {
+class RoutineItemModel extends DataClass
+    implements Insertable<RoutineItemModel> {
   final int id;
   final int routineDayId;
   final int exerciseId;
@@ -3201,7 +3218,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
   final int restDuration;
   final int order;
   final int groupNumber;
-  RoutineItem(
+  RoutineItemModel(
       {@required this.id,
       @required this.routineDayId,
       @required this.exerciseId,
@@ -3209,12 +3226,13 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
       @required this.restDuration,
       @required this.order,
       this.groupNumber});
-  factory RoutineItem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory RoutineItemModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return RoutineItem(
+    return RoutineItemModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       routineDayId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}routine_day_id']),
@@ -3255,8 +3273,8 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
     return map;
   }
 
-  RoutineItemsCompanion toCompanion(bool nullToAbsent) {
-    return RoutineItemsCompanion(
+  RoutineItemsModelCompanion toCompanion(bool nullToAbsent) {
+    return RoutineItemsModelCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       routineDayId: routineDayId == null && nullToAbsent
           ? const Value.absent()
@@ -3276,10 +3294,10 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
     );
   }
 
-  factory RoutineItem.fromJson(Map<String, dynamic> json,
+  factory RoutineItemModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return RoutineItem(
+    return RoutineItemModel(
       id: serializer.fromJson<int>(json['id']),
       routineDayId: serializer.fromJson<int>(json['routineDayId']),
       exerciseId: serializer.fromJson<int>(json['exerciseId']),
@@ -3303,7 +3321,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
     };
   }
 
-  RoutineItem copyWith(
+  RoutineItemModel copyWith(
           {int id,
           int routineDayId,
           int exerciseId,
@@ -3311,7 +3329,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
           int restDuration,
           int order,
           int groupNumber}) =>
-      RoutineItem(
+      RoutineItemModel(
         id: id ?? this.id,
         routineDayId: routineDayId ?? this.routineDayId,
         exerciseId: exerciseId ?? this.exerciseId,
@@ -3322,7 +3340,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
       );
   @override
   String toString() {
-    return (StringBuffer('RoutineItem(')
+    return (StringBuffer('RoutineItemModel(')
           ..write('id: $id, ')
           ..write('routineDayId: $routineDayId, ')
           ..write('exerciseId: $exerciseId, ')
@@ -3348,7 +3366,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is RoutineItem &&
+      (other is RoutineItemModel &&
           other.id == this.id &&
           other.routineDayId == this.routineDayId &&
           other.exerciseId == this.exerciseId &&
@@ -3358,7 +3376,7 @@ class RoutineItem extends DataClass implements Insertable<RoutineItem> {
           other.groupNumber == this.groupNumber);
 }
 
-class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
+class RoutineItemsModelCompanion extends UpdateCompanion<RoutineItemModel> {
   final Value<int> id;
   final Value<int> routineDayId;
   final Value<int> exerciseId;
@@ -3366,7 +3384,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
   final Value<int> restDuration;
   final Value<int> order;
   final Value<int> groupNumber;
-  const RoutineItemsCompanion({
+  const RoutineItemsModelCompanion({
     this.id = const Value.absent(),
     this.routineDayId = const Value.absent(),
     this.exerciseId = const Value.absent(),
@@ -3375,7 +3393,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
     this.order = const Value.absent(),
     this.groupNumber = const Value.absent(),
   });
-  RoutineItemsCompanion.insert({
+  RoutineItemsModelCompanion.insert({
     this.id = const Value.absent(),
     @required int routineDayId,
     @required int exerciseId,
@@ -3388,7 +3406,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
         note = Value(note),
         restDuration = Value(restDuration),
         order = Value(order);
-  static Insertable<RoutineItem> custom({
+  static Insertable<RoutineItemModel> custom({
     Expression<int> id,
     Expression<int> routineDayId,
     Expression<int> exerciseId,
@@ -3408,7 +3426,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
     });
   }
 
-  RoutineItemsCompanion copyWith(
+  RoutineItemsModelCompanion copyWith(
       {Value<int> id,
       Value<int> routineDayId,
       Value<int> exerciseId,
@@ -3416,7 +3434,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
       Value<int> restDuration,
       Value<int> order,
       Value<int> groupNumber}) {
-    return RoutineItemsCompanion(
+    return RoutineItemsModelCompanion(
       id: id ?? this.id,
       routineDayId: routineDayId ?? this.routineDayId,
       exerciseId: exerciseId ?? this.exerciseId,
@@ -3456,7 +3474,7 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
 
   @override
   String toString() {
-    return (StringBuffer('RoutineItemsCompanion(')
+    return (StringBuffer('RoutineItemsModelCompanion(')
           ..write('id: $id, ')
           ..write('routineDayId: $routineDayId, ')
           ..write('exerciseId: $exerciseId, ')
@@ -3469,11 +3487,11 @@ class RoutineItemsCompanion extends UpdateCompanion<RoutineItem> {
   }
 }
 
-class $RoutineItemsTable extends RoutineItems
-    with TableInfo<$RoutineItemsTable, RoutineItem> {
+class $RoutineItemsModelTable extends RoutineItemsModel
+    with TableInfo<$RoutineItemsModelTable, RoutineItemModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $RoutineItemsTable(this._db, [this._alias]);
+  $RoutineItemsModelTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -3559,13 +3577,13 @@ class $RoutineItemsTable extends RoutineItems
   List<GeneratedColumn> get $columns =>
       [id, routineDayId, exerciseId, note, restDuration, order, groupNumber];
   @override
-  $RoutineItemsTable get asDslTable => this;
+  $RoutineItemsModelTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'routine_items';
   @override
   final String actualTableName = 'routine_items';
   @override
-  VerificationContext validateIntegrity(Insertable<RoutineItem> instance,
+  VerificationContext validateIntegrity(Insertable<RoutineItemModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3620,14 +3638,14 @@ class $RoutineItemsTable extends RoutineItems
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  RoutineItem map(Map<String, dynamic> data, {String tablePrefix}) {
+  RoutineItemModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return RoutineItem.fromData(data, _db, prefix: effectivePrefix);
+    return RoutineItemModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $RoutineItemsTable createAlias(String alias) {
-    return $RoutineItemsTable(_db, alias);
+  $RoutineItemsModelTable createAlias(String alias) {
+    return $RoutineItemsModelTable(_db, alias);
   }
 }
 
@@ -3640,35 +3658,45 @@ abstract class _$MyDatabase extends GeneratedDatabase {
       _translations ??= $TranslationsTable(this);
   $LocalesTable _locales;
   $LocalesTable get locales => _locales ??= $LocalesTable(this);
-  $ExercisesTable _exercises;
-  $ExercisesTable get exercises => _exercises ??= $ExercisesTable(this);
-  $ExercisesTypesTable _exercisesTypes;
-  $ExercisesTypesTable get exercisesTypes =>
-      _exercisesTypes ??= $ExercisesTypesTable(this);
-  $EquipmentsTable _equipments;
-  $EquipmentsTable get equipments => _equipments ??= $EquipmentsTable(this);
-  $ExercisesMusclesTable _exercisesMuscles;
-  $ExercisesMusclesTable get exercisesMuscles =>
-      _exercisesMuscles ??= $ExercisesMusclesTable(this);
-  $MusclesTable _muscles;
-  $MusclesTable get muscles => _muscles ??= $MusclesTable(this);
-  $SessionsTable _sessions;
-  $SessionsTable get sessions => _sessions ??= $SessionsTable(this);
-  $SessionItemsTable _sessionItems;
-  $SessionItemsTable get sessionItems =>
-      _sessionItems ??= $SessionItemsTable(this);
-  $UnitSystemsTable _unitSystems;
-  $UnitSystemsTable get unitSystems => _unitSystems ??= $UnitSystemsTable(this);
-  $RoutinesTable _routines;
-  $RoutinesTable get routines => _routines ??= $RoutinesTable(this);
-  $RoutineDaysTable _routineDays;
-  $RoutineDaysTable get routineDays => _routineDays ??= $RoutineDaysTable(this);
-  $RoutineItemsTable _routineItems;
-  $RoutineItemsTable get routineItems =>
-      _routineItems ??= $RoutineItemsTable(this);
+  $ExercisesModelTable _exercisesModel;
+  $ExercisesModelTable get exercisesModel =>
+      _exercisesModel ??= $ExercisesModelTable(this);
+  $ExercisesTypesModelTable _exercisesTypesModel;
+  $ExercisesTypesModelTable get exercisesTypesModel =>
+      _exercisesTypesModel ??= $ExercisesTypesModelTable(this);
+  $EquipmentsModelTable _equipmentsModel;
+  $EquipmentsModelTable get equipmentsModel =>
+      _equipmentsModel ??= $EquipmentsModelTable(this);
+  $ExercisesMusclesModelTable _exercisesMusclesModel;
+  $ExercisesMusclesModelTable get exercisesMusclesModel =>
+      _exercisesMusclesModel ??= $ExercisesMusclesModelTable(this);
+  $MusclesModelTable _musclesModel;
+  $MusclesModelTable get musclesModel =>
+      _musclesModel ??= $MusclesModelTable(this);
+  $SessionsModelTable _sessionsModel;
+  $SessionsModelTable get sessionsModel =>
+      _sessionsModel ??= $SessionsModelTable(this);
+  $SessionItemsModelTable _sessionItemsModel;
+  $SessionItemsModelTable get sessionItemsModel =>
+      _sessionItemsModel ??= $SessionItemsModelTable(this);
+  $UnitSystemsModelTable _unitSystemsModel;
+  $UnitSystemsModelTable get unitSystemsModel =>
+      _unitSystemsModel ??= $UnitSystemsModelTable(this);
+  $RoutinesModelTable _routinesModel;
+  $RoutinesModelTable get routinesModel =>
+      _routinesModel ??= $RoutinesModelTable(this);
+  $RoutineDaysModelTable _routineDaysModel;
+  $RoutineDaysModelTable get routineDaysModel =>
+      _routineDaysModel ??= $RoutineDaysModelTable(this);
+  $RoutineItemsModelTable _routineItemsModel;
+  $RoutineItemsModelTable get routineItemsModel =>
+      _routineItemsModel ??= $RoutineItemsModelTable(this);
   ExercisesDao _exercisesDao;
   ExercisesDao get exercisesDao =>
       _exercisesDao ??= ExercisesDao(this as MyDatabase);
+  RoutinesDao _routinesDao;
+  RoutinesDao get routinesDao =>
+      _routinesDao ??= RoutinesDao(this as MyDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -3676,16 +3704,16 @@ abstract class _$MyDatabase extends GeneratedDatabase {
         i18n,
         translations,
         locales,
-        exercises,
-        exercisesTypes,
-        equipments,
-        exercisesMuscles,
-        muscles,
-        sessions,
-        sessionItems,
-        unitSystems,
-        routines,
-        routineDays,
-        routineItems
+        exercisesModel,
+        exercisesTypesModel,
+        equipmentsModel,
+        exercisesMusclesModel,
+        musclesModel,
+        sessionsModel,
+        sessionItemsModel,
+        unitSystemsModel,
+        routinesModel,
+        routineDaysModel,
+        routineItemsModel
       ];
 }

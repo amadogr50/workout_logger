@@ -11,5 +11,5 @@ class Routine extends Equatable {
   const Routine({@required this.id, @required this.name, @required this.current, @required this.days});
 
   @override
-  List<Object> get props => [name, days];
+  List<Object> get props => [id];
 }
