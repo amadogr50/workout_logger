@@ -1,7 +1,9 @@
 import 'package:moor/moor.dart';
 import 'package:workout_logger/core/db/db.dart';
+import 'package:workout_logger/domain/entities/equipment.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
-import 'package:workout_logger/domain/entities/routine.dart';
+import 'package:workout_logger/domain/entities/exercise_type.dart';
+import 'package:workout_logger/domain/entities/muscles.dart';
 
 @DataClassName('ExerciseModel')
 class ExercisesModel extends Table {
@@ -16,18 +18,32 @@ class ExercisesModel extends Table {
   IntColumn get i18nName =>
       integer().customConstraint('NULL REFERENCES i18n(id)')();
 
-  TextColumn get instructions => text().nullable()();
+  IntColumn? get i18nInstructions =>
+      integer().nullable().customConstraint('NULL REFERENCES i18n(id)')();
 
   @override
   String get tableName => 'exercises';
 
-  @override
-  ExercisesModelCompanion createCompanion(Exercise entity) {
-
+  static Exercise createEntity({
+    required ExerciseModel exerciseModel,
+    required String name,
+    String? instructions,
+    required ExerciseType type,
+    required List<Muscle> muscles,
+    required Equipment equipment,
+  }) {
+    return Exercise(
+      id: exerciseModel.id,
+      name: name,
+      type: type,
+      instructions: instructions,
+      muscles: muscles,
+      equipment: equipment,
+    );
   }
 }
 
-@DataClassName('ExercisesTypeModel')
+@DataClassName('ExerciseTypeModel')
 class ExercisesTypesModel extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -36,6 +52,13 @@ class ExercisesTypesModel extends Table {
 
   @override
   String get tableName => 'exercises_types';
+
+  static ExerciseType createEntity(
+    ExerciseTypeModel exerciseTypeModel,
+    String name,
+  ) {
+    return ExerciseType(id: exerciseTypeModel.id, name: name);
+  }
 }
 
 @DataClassName('EquipmentModel')
@@ -47,6 +70,13 @@ class EquipmentsModel extends Table {
 
   @override
   String get tableName => 'equipments';
+
+  static Equipment createEntity(EquipmentModel equipmentModel, String name) {
+    return Equipment(
+      id: equipmentModel.id,
+      name: name,
+    );
+  }
 }
 
 @DataClassName('ExercisesMuscleModel')
@@ -59,6 +89,13 @@ class ExercisesMusclesModel extends Table {
 
   @override
   String get tableName => 'exercises_muscles';
+
+  static ExerciseType createEntity(
+    ExerciseTypeModel exerciseTypeModel,
+    String name,
+  ) {
+    return ExerciseType(id: exerciseTypeModel.id, name: name);
+  }
 }
 
 @DataClassName('MuscleModel')
@@ -70,4 +107,8 @@ class MusclesModel extends Table {
 
   @override
   String get tableName => 'muscles';
+
+  static Muscle createEntity(MuscleModel muscleModel, String name) {
+    return Muscle(id: muscleModel.id, name: name);
+  }
 }

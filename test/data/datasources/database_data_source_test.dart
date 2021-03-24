@@ -2,13 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 import 'package:workout_logger/core/db/db.dart';
 import 'package:workout_logger/data/datasources/database_data_source.dart';
-import 'package:workout_logger/domain/entities/routine.dart';
-import 'package:workout_logger/domain/entities/routine_day.dart';
-import 'package:workout_logger/domain/entities/routine_item.dart';
 
 void main() {
-  DatabaseDataSource dataSource;
-  MyDatabase database;
+  late DatabaseDataSource dataSource;
+  late MyDatabase database;
 
   setUp(() {
     database = MyDatabase.fromQueryExecutor(VmDatabase.memory());
@@ -19,98 +16,102 @@ void main() {
     await database.close();
   });
 
-  const RoutineItem tRoutineItem1 = RoutineItem(
-    id: 1,
-    exercise: null,
-    note: 'Test Note',
-    restDuration: 60,
-    sets: null,
-    order: 1,
-    groupNumber: 0,
-  );
-  const RoutineItem tRoutineItem2 = RoutineItem(
-    id: 2,
-    exercise: null,
-    note: 'Test Note',
-    restDuration: 60,
-    sets: null,
-    order: 2,
-    groupNumber: 0,
-  );
-  const RoutineItem tRoutineItem3 = RoutineItem(
-    id: 3,
-    exercise: null,
-    note: 'Test Note',
-    restDuration: 60,
-    sets: null,
-    order: 3,
-    groupNumber: 0,
-  );
-  const RoutineItem tRoutineItem4 = RoutineItem(
-    id: 4,
-    exercise: null,
-    note: 'Test Note',
-    restDuration: 60,
-    sets: null,
-    order: 4,
-    groupNumber: 0,
-  );
-  const RoutineDay tRoutineDay1 = RoutineDay(
-    id: 1,
-    name: 'Test Routine 1',
-    items: [tRoutineItem1, tRoutineItem2],
-    order: 1,
-  );
-  const RoutineDay tRoutineDay2 = RoutineDay(
-    id: 2,
-    name: 'Test Routine 2',
-    items: [tRoutineItem3, tRoutineItem4],
-    order: 2,
-  );
-  const tRoutine1Id = 1;
-  const Routine tRoutine1 = Routine(
-    id: tRoutine1Id,
-    name: 'Test Routine',
-    current: false,
-    days: [tRoutineDay1, tRoutineDay2],
-  );
+  // const RoutineItem tRoutineItem1 = RoutineItem(
+  //   id: 1,
+  //   exercise: Exercise(id: 1),
+  //   note: 'Test Note',
+  //   restDuration: 60,
+  //   sets: null,
+  //   order: 1,
+  //   groupNumber: 0,
+  // );
+  // const RoutineItem tRoutineItem2 = RoutineItem(
+  //   id: 2,
+  //   exercise: 1,
+  //   note: 'Test Note',
+  //   restDuration: 60,
+  //   sets: null,
+  //   order: 2,
+  //   groupNumber: 0,
+  // );
+  // const RoutineItem tRoutineItem3 = RoutineItem(
+  //   id: 3,
+  //   exercise: 1,
+  //   note: 'Test Note',
+  //   restDuration: 60,
+  //   sets: null,
+  //   order: 3,
+  //   groupNumber: 0,
+  // );
+  // const RoutineItem tRoutineItem4 = RoutineItem(
+  //   id: 4,
+  //   exercise: 1,
+  //   note: 'Test Note',
+  //   restDuration: 60,
+  //   sets: null,
+  //   order: 4,
+  //   groupNumber: 0,
+  // );
+  // const RoutineDay tRoutineDay1 = RoutineDay(
+  //   id: 1,
+  //   name: 'Test Routine 1',
+  //   items: [tRoutineItem1, tRoutineItem2],
+  //   order: 1,
+  // );
+  // const RoutineDay tRoutineDay2 = RoutineDay(
+  //   id: 2,
+  //   name: 'Test Routine 2',
+  //   items: [tRoutineItem3, tRoutineItem4],
+  //   order: 2,
+  // );
+  // const tRoutine1Id = 1;
+  // const Routine tRoutine1 = Routine(
+  //   id: tRoutine1Id,
+  //   name: 'Test Routine',
+  //   current: false,
+  //   days: [tRoutineDay1, tRoutineDay2],
+  // );
 
-  test('should be able to add a routine', () async {
+  test('should be able to get an specific exercise with its id', () async {
+    // arrange
+    const tExerciseId = 1;
+
+    // act
+    final exercise = await dataSource.getExercise(tExerciseId);
+    // assert
+    expect(exercise.id, tExerciseId);
+  });
+
+  test('should be able to get all exercises', () async {
     // arrange
 
     // act
-    final routine = await dataSource.addRoutine(tRoutine1);
+    final exercises = await dataSource.getExercises();
     // assert
-    expect(routine, equals(tRoutine1));
+    expect(exercises[0].id, 1);
   });
 
-  test('should be able to get all routines', () async {
+  test('should be able to create a new exercise', () async {
     // arrange
+    const tExerciseName = 'New Test';
+    const tInstructions = 'New Instructions';
+    const tExerciseTypeId = 1;
+    const tEquipmentId = 1;
+    const tMusclesIds = [1];
 
     // act
-    final routines = await dataSource.getRoutines();
+    final exercise = await dataSource.addExercise(
+      name: tExerciseName,
+      exerciseTypeId: tExerciseTypeId,
+      equipmentId: tEquipmentId,
+      instructions: tInstructions,
+      musclesIds: tMusclesIds,
+    );
     // assert
-    expect(routines[0], equals(tRoutine1));
+    expect(exercise.name, tExerciseName);
+    expect(exercise.instructions, tInstructions);
+    expect(exercise.type.id, tExerciseTypeId);
+    expect(exercise.equipment.id, tEquipmentId);
+    expect(exercise.muscles.map((e) => e.id).toList(), tMusclesIds);
   });
-
-  test('should be able to get an specific routine with its id', () async {
-    // arrange
-
-    // act
-    final routine = await dataSource.getRoutine(tRoutine1Id);
-    // assert
-    expect(routine, tRoutine1);
-  });
-
-  // group('addRoutine', () {
-  //
-  // });
-  //
-  // group('deleteRoutine', () {
-  //
-  // });
-  //
-  // group('updateRoutine', () {
-  //
-  // });
 }

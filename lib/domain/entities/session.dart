@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:workout_logger/domain/entities/session_item.dart';
 
 class Session extends Equatable {
@@ -7,10 +6,11 @@ class Session extends Equatable {
   final DateTime startedAt;
   final DateTime finishedAt;
 
-  const Session(
-      {@required this.startedAt,
-      @required this.finishedAt,
-      @required this.items});
+  const Session({
+    required this.startedAt,
+    required this.finishedAt,
+    required this.items,
+  });
 
   @override
   List<Object> get props => [startedAt, finishedAt];

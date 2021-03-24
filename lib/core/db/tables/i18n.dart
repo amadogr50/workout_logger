@@ -5,13 +5,20 @@ class I18n extends Table {
 }
 
 class Translations extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  IntColumn get i18nId => integer().customConstraint('NULL REFERENCES i18n(id)')();
-  IntColumn get localeId => integer().customConstraint('NULL REFERENCES locales(id)')();
+  IntColumn get i18nId =>
+      integer().customConstraint('NULL REFERENCES i18n(id)')();
+
+  IntColumn get localeId =>
+      integer().customConstraint('NULL REFERENCES locales(id)')();
+
   TextColumn get textTranslation => text()();
+
+  @override
+  Set<Column> get primaryKey => {i18nId, localeId};
 }
 
 class Locales extends Table {
   IntColumn get id => integer().autoIncrement()();
+
   TextColumn get locale => text()();
 }

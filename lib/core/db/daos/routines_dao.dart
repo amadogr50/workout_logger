@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:moor/moor.dart';
 import 'package:workout_logger/core/db/db.dart';
 import 'package:workout_logger/core/db/tables/routines.dart';
@@ -43,8 +41,19 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
       }
     }
 
-    print('Holaaaaaaaaaaaaaaaaaaaaaaa');
+    return getRoutine(routineId);
+  }
 
+  Future<Routine> addEmptyRoutine() async {
+    final routineId = await _addRoutine(const RoutinesModelCompanion());
+    return getRoutine(routineId);
+  }
+
+  Future<int> _addRoutine(RoutinesModelCompanion routinesModelCompanion) async {
+    return into(routinesModel).insertOnConflictUpdate(routinesModelCompanion);
+  }
+
+  Future<Routine> getRoutine(int routineId) async {
     final routineModel = await (select(routinesModel)
           ..where((table) => table.id.equals(routineId)))
         .getSingle();
@@ -77,8 +86,6 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
     final routineDayId = await into(routineDaysModel)
         .insertOnConflictUpdate(routineDayCompanion);
 
-    print(routineDay);
-
     if (routineDay.items.isNotEmpty) {
       for (final routineItem in routineDay.items) {
         await _addOrUpdateRoutineItem(routineItem, routineDayId);
@@ -107,10 +114,11 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
           ..where((table1) => table1.id.equals(routineDayId))
           ..orderBy([(table) => OrderingTerm(expression: table.order)]))
         .get();
-    return routineItemsModels
-        .map((routineItemModel) => RoutineItemsModel.createEntity(
-            routineItemModel, null)) // TODO: Add exercise to routine item
-        .toList();
+    return Future.wait(routineItemsModels.map((routineItemModel) async {
+      final exercise =
+          await db.exercisesDao.getExercise(routineItemModel.exerciseId);
+      return RoutineItemsModel.createEntity(routineItemModel, exercise);
+    }));
   }
 
   Future<int> _addOrUpdateRoutineItem(
@@ -119,7 +127,6 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
   ) async {
     final routineItemCompanion =
         RoutineItemsModel.createCompanion(routineItem, routineDayId);
-    print(routineItemCompanion);
     return into(routineItemsModel).insertOnConflictUpdate(routineItemCompanion);
   }
 
@@ -132,12 +139,9 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
     final routineItemModel = await (select(routineItemsModel)
           ..where((table1) => table1.id.equals(routineItemId)))
         .getSingle();
-    return RoutineItemsModel.createEntity(
-        routineItemModel, null); // TODO: Add exercise to routine item
-  }
-
-  Future<Routine> addEmptyRoutine() async {
-    return addBaseRoutine(const RoutinesModelCompanion());
+    final exercise =
+        await db.exercisesDao.getExercise(routineItemModel.exerciseId);
+    return RoutineItemsModel.createEntity(routineItemModel, exercise);
   }
 
   Future<Routine> addBaseRoutine(
@@ -151,6 +155,7 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
         name: routineModel.name,
         current: routineModel.current,
         days: const []);
+
     return routine;
   }
 

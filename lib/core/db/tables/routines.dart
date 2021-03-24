@@ -90,7 +90,7 @@ class RoutineItemsModel extends Table {
 
   IntColumn get order => integer()();
 
-  IntColumn get groupNumber => integer().nullable()();
+  IntColumn get groupNumber => integer().withDefault(const Constant(0))();
 
   @override
   String get tableName => 'routine_items';
@@ -102,7 +102,7 @@ class RoutineItemsModel extends Table {
     return RoutineItemsModelCompanion(
       id: Value(routineItem.id),
       routineDayId: Value(routineDayId),
-      exerciseId: routineItem.exercise != null ? Value(routineItem.exercise.id) : null,
+      exerciseId: Value(routineItem.exercise.id),
       note: Value(routineItem.note),
       restDuration: Value(routineItem.restDuration),
       order: Value(routineItem.order),
@@ -117,7 +117,7 @@ class RoutineItemsModel extends Table {
       exercise: exercise,
       note: routineItemModel.note,
       restDuration: routineItemModel.restDuration,
-      sets: null,
+      sets: const [], // TODO: Implement Sets
       // TODO: Implement sets
       order: routineItemModel.order,
       groupNumber: routineItemModel.groupNumber,
