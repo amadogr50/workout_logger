@@ -163,7 +163,7 @@ packages:
     source: hosted
     version: "3.0.0"
   crypto:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: crypto
       url: "https://pub.dartlang.org"
@@ -196,7 +196,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-prev3"
+    version: "4.0.0"
   equatable:
     dependency: "direct main"
     description:
@@ -374,7 +374,7 @@ packages:
     source: hosted
     version: "1.5.3"
   logging:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: logging
       url: "https://pub.dartlang.org"
@@ -407,21 +407,21 @@ packages:
       name: mockito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.2"
+    version: "5.0.3"
   moor:
     dependency: "direct main"
     description:
       name: moor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.0"
+    version: "4.2.1"
   moor_generator:
     dependency: "direct dev"
     description:
       name: moor_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.0"
+    version: "4.2.1"
   package_config:
     dependency: transitive
     description:
@@ -568,7 +568,7 @@ packages:
     source: sdk
     version: "0.0.99"
   source_gen:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: source_gen
       url: "https://pub.dartlang.org"
