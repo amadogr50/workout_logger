@@ -4,12 +4,12 @@ import 'package:workout_logger/responsive/screen_type_layout.dart';
 class _BaseResponsiveText extends StatelessWidget {
   final String data;
   final FontWeight fontWeight;
-  final double? mobileFontSize;
-  final double? mobileHeight;
-  final double? tabletFontSize;
-  final double? tabletHeight;
-  final double? desktopFontSize;
-  final double? desktopHeight;
+  final double mobileFontSize;
+  final double mobileHeight;
+  final double tabletFontSize;
+  final double tabletHeight;
+  final double desktopFontSize;
+  final double desktopHeight;
   final Color color;
 
   const _BaseResponsiveText(
@@ -36,7 +36,7 @@ class _BaseResponsiveText extends StatelessWidget {
           fontSize: mobileFontSize,
           fontWeight: fontWeight,
           color: color,
-          height: mobileHeight,
+          height: mobileHeight / mobileFontSize,
         ),
       ),
       tablet: Text(
@@ -46,7 +46,7 @@ class _BaseResponsiveText extends StatelessWidget {
           fontSize: tabletFontSize,
           fontWeight: fontWeight,
           color: color,
-          height: tabletHeight,
+          height: tabletHeight / tabletFontSize,
         ),
       ),
       desktop: Text(
@@ -56,7 +56,7 @@ class _BaseResponsiveText extends StatelessWidget {
           fontSize: desktopFontSize,
           fontWeight: fontWeight,
           color: color,
-          height: desktopHeight,
+          height: desktopHeight / desktopFontSize,
         ),
       ),
       key: GlobalKey(),
@@ -90,7 +90,7 @@ class _BaseStaticText extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: fontWeight,
         color: color,
-        height: height,
+        height: height / fontSize,
       ),
     );
   }
