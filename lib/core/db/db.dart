@@ -58,6 +58,8 @@ class MyDatabase extends _$MyDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         beforeOpen: (details) async {
+          print("WasCreated: ${details.wasCreated}");
+
           if (details.wasCreated) {
             // Locales
             final enId = await into(locales)
@@ -78,12 +80,33 @@ class MyDatabase extends _$MyDatabase {
                 localeId: Value(enId),
                 textTranslation: const Value("Barbell")));
 
+            final equipment2I18nId =
+                await into(i18n).insert(const I18nCompanion());
+            await into(translations).insert(TranslationsCompanion(
+                i18nId: Value(equipment2I18nId),
+                localeId: Value(enId),
+                textTranslation: const Value("Dumbell")));
+
             final muscle1I18nId =
                 await into(i18n).insert(const I18nCompanion());
             await into(translations).insert(TranslationsCompanion(
                 i18nId: Value(muscle1I18nId),
                 localeId: Value(enId),
                 textTranslation: const Value("Chest")));
+
+            final muscle2I18nId =
+                await into(i18n).insert(const I18nCompanion());
+            await into(translations).insert(TranslationsCompanion(
+                i18nId: Value(muscle2I18nId),
+                localeId: Value(enId),
+                textTranslation: const Value("Biceps")));
+
+            final muscle3I18nId =
+                await into(i18n).insert(const I18nCompanion());
+            await into(translations).insert(TranslationsCompanion(
+                i18nId: Value(muscle3I18nId),
+                localeId: Value(enId),
+                textTranslation: const Value("Back")));
 
             final exercise1I18nId =
                 await into(i18n).insert(const I18nCompanion());
@@ -101,9 +124,18 @@ class MyDatabase extends _$MyDatabase {
             final equipment1Id = await into(equipmentsModel).insert(
                 EquipmentsModelCompanion(i18nName: Value(equipment1I18nId)));
 
+            await into(equipmentsModel).insert(
+                EquipmentsModelCompanion(i18nName: Value(equipment2I18nId)));
+
             // Muscles
             final muscle1Id = await into(musclesModel)
                 .insert(MusclesModelCompanion(i18nName: Value(muscle1I18nId)));
+
+            await into(musclesModel)
+                .insert(MusclesModelCompanion(i18nName: Value(muscle2I18nId)));
+
+            await into(musclesModel)
+                .insert(MusclesModelCompanion(i18nName: Value(muscle3I18nId)));
 
             // Exercises
             final exercise1Id = await into(exercisesModel).insert(

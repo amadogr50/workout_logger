@@ -120,6 +120,14 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
     return EquipmentsModel.createEntity(equipmentModel, equipmentName);
   }
 
+  Future<List<Equipment>> getEquipments() async {
+    final List<EquipmentModel> equipmentModels =
+        await select(equipmentsModel).get();
+    return Future.wait(equipmentModels.map((equipmentModel) async {
+      return getEquipment(equipmentModel.id);
+    }));
+  }
+
   Future<Muscle> getMuscle(int muscleId) async {
     final MuscleModel muscleModel = await (select(musclesModel)
           ..where((t) => t.id.equals(muscleId)))
@@ -137,6 +145,14 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
 
     return Future.wait(exercisesMuscleModels.map((exercisesMuscleModel) async {
       return getMuscle(exercisesMuscleModel.muscleId);
+    }));
+  }
+
+  Future<List<Muscle>> getMuscles() async {
+    final List<MuscleModel> muscleModels = await select(musclesModel).get();
+
+    return Future.wait(muscleModels.map((muscleModel) async {
+      return getMuscle(muscleModel.id);
     }));
   }
 }
