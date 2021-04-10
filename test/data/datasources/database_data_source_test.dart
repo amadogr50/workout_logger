@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
-import 'package:workout_logger/core/db/db.dart';
-import 'package:workout_logger/data/datasources/database_data_source.dart';
+import 'package:workout_logger/db/db.dart';
+import 'package:workout_logger/domain/datasources/database_data_source.dart';
 
 void main() {
   late DatabaseDataSource dataSource;

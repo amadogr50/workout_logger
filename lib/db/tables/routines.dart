@@ -1,9 +1,10 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/core/db/db.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/routine.dart';
 import 'package:workout_logger/domain/entities/routine_day.dart';
 import 'package:workout_logger/domain/entities/routine_item.dart';
+
+import '../db.dart';
 
 @DataClassName('RoutineModel')
 class RoutinesModel extends Table {

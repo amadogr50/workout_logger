@@ -1,9 +1,10 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/core/db/db.dart';
-import 'package:workout_logger/core/db/tables/routines.dart';
+import 'package:workout_logger/db/tables/routines.dart';
 import 'package:workout_logger/domain/entities/routine.dart';
 import 'package:workout_logger/domain/entities/routine_day.dart';
 import 'package:workout_logger/domain/entities/routine_item.dart';
+
+import '../db.dart';
 
 part 'routines_dao.g.dart';
 

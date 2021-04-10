@@ -1,10 +1,11 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/core/db/db.dart';
-import 'package:workout_logger/core/db/tables/exercises.dart';
+import 'package:workout_logger/db/tables/exercises.dart';
 import 'package:workout_logger/domain/entities/equipment.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/exercise_type.dart';
 import 'package:workout_logger/domain/entities/muscles.dart';
+
+import '../db.dart';
 
 part 'exercises_dao.g.dart';
 
@@ -109,6 +110,17 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
         await db.i18nDao.getTranslation(exerciseTypeModel.i18nName);
     return ExercisesTypesModel.createEntity(
         exerciseTypeModel, exerciseTypeName);
+  }
+
+  Future<List<ExerciseType>> getExercisesTypes() async {
+    final List<ExerciseTypeModel> exercisesTypesModels =
+        await select(exercisesTypesModel).get();
+    return Future.wait(exercisesTypesModels.map((exerciseTypeModel) async {
+      final String exerciseTypeName =
+          await db.i18nDao.getTranslation(exerciseTypeModel.i18nName);
+      return ExercisesTypesModel.createEntity(
+          exerciseTypeModel, exerciseTypeName);
+    }));
   }
 
   Future<Equipment> getEquipment(int equipmentId) async {

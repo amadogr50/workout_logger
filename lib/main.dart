@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:workout_logger/presentation/pages/add_exercise_page.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -14,9 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Scaffold(
-        body: Center(child: Text('text')),
-      ),
+      home: AddExercisePage(),
     );
   }
 }

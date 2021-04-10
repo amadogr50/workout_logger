@@ -1,9 +1,10 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/core/db/db.dart';
 import 'package:workout_logger/domain/entities/equipment.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/exercise_type.dart';
 import 'package:workout_logger/domain/entities/muscles.dart';
+
+import '../db.dart';
 
 @DataClassName('ExerciseModel')
 class ExercisesModel extends Table {

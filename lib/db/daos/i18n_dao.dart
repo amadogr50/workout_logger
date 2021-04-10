@@ -1,6 +1,6 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/core/db/tables/i18n.dart';
 import 'package:workout_logger/core/locales_utils.dart';
+import 'package:workout_logger/db/tables/i18n.dart';
 
 import '../db.dart';
 

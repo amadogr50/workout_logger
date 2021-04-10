@@ -1,6 +1,7 @@
-import 'package:workout_logger/core/db/db.dart';
-import 'package:workout_logger/data/datasources/local_data_source.dart';
+import 'package:workout_logger/db/db.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
+
+import 'local_data_source.dart';
 
 class DatabaseDataSource implements LocalDataSource {
   final MyDatabase db;

@@ -4,8 +4,8 @@ import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:workout_logger/core/db/daos/exercises_dao.dart';
 
+import 'daos/exercises_dao.dart';
 import 'daos/i18n_dao.dart';
 import 'daos/routines_dao.dart';
 import 'tables/exercises.dart';
