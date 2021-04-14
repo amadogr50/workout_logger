@@ -1,4 +1,5 @@
 import 'package:moor/moor.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:workout_logger/core/locales_utils.dart';
 import 'package:workout_logger/db/tables/i18n.dart';
 
@@ -50,6 +51,37 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     return translationModel.textTranslation;
   }
 
+  Stream<String> watchTranslation(int i18nId) {
+    final localeIdStream = watchLocale();
+
+    return localeIdStream.switchMap((localeId) {
+      final translationModelStream = (select(translations)
+            ..where(
+                (t) => t.i18nId.equals(i18nId) & t.localeId.equals(localeId)))
+          .watchSingle();
+      return translationModelStream
+          .map((translationModel) => translationModel.textTranslation);
+    });
+  }
+
+  Stream<Map<int, String>> watchTranslations(List<int> i18nIds) {
+    final localeIdStream = watchLocale();
+
+    return localeIdStream.switchMap((localeId) {
+      final translationsModelsStream = (select(translations)
+            ..where(
+                (t) => t.i18nId.isIn(i18nIds) & t.localeId.equals(localeId)))
+          .watch();
+
+      return translationsModelsStream.map((translationsModels) {
+        return {
+          for (var translationModel in translationsModels)
+            translationModel.i18nId: translationModel.textTranslation
+        };
+      });
+    });
+  }
+
   Future<int> addLocale(String locale) async {
     return into(locales).insert(LocalesCompanion(locale: Value(locale)));
   }
@@ -63,6 +95,26 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
         .getSingle();
 
     return localeModel.id;
+  }
+
+  Stream<int> watchLocale() {
+    final currentLocale = LocalesUtils.getCurrentLocale();
+
+    final Stream<List<Locale>> localesModelsStream = (select(locales)
+          ..where(
+            (t) => t.locale.equals(currentLocale) | t.locale.equals('en'),
+          ))
+        .watch();
+
+    return localesModelsStream.map((localesModels) {
+      if (localesModels.length == 2) {
+        return localesModels
+            .firstWhere((localeModel) => localeModel.locale == currentLocale)
+            .id;
+      }
+
+      return localesModels.first.id;
+    });
   }
 
   Future<int> getLocaleOrAdd() async {

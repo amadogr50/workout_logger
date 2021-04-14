@@ -1,5 +1,6 @@
 import 'package:workout_logger/db/db.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
+import 'package:workout_logger/domain/entities/routine.dart';
 
 import 'local_data_source.dart';
 
@@ -8,8 +9,7 @@ class DatabaseDataSource implements LocalDataSource {
 
   DatabaseDataSource(this.db);
 
-  // @override
-  // Future<Routine> getCurrentRoutine() async {}
+  // Future<Routine> watchCurrentRoutine() async {}
   //
   // @override
   // Future<Routine> updateRoutine(Routine routine) async {}
@@ -23,13 +23,13 @@ class DatabaseDataSource implements LocalDataSource {
   // }
   //
   // @override
-  // Future<Routine> getRoutine(int id) async {
-  //   return db.routinesDao.getRoutine(id);
+  // Future<Routine> watchRoutine(int id) async {
+  //   return db.routinesDao.watchRoutine(id);
   // }
   //
   // @override
-  // Future<List<Routine>> getRoutines() async {
-  //   return db.routinesDao.getRoutines();
+  // Future<List<Routine>> watchRoutines() async {
+  //   return db.routinesDao.watchRoutines();
   // }
   //
   // @override
@@ -47,8 +47,8 @@ class DatabaseDataSource implements LocalDataSource {
   // }
   //
   // @override
-  // Future<List<RoutineItem>> getRoutineItemsOfRoutineDay(int routineDayId) {
-  //   return db.routinesDao.getRoutineItemsOfRoutineDay(routineDayId);
+  // Future<List<RoutineItem>> watchRoutineItemsOfRoutineDay(int routineDayId) {
+  //   return db.routinesDao.watchRoutineItemsOfRoutineDay(routineDayId);
   // }
   //
   // @override
@@ -63,17 +63,7 @@ class DatabaseDataSource implements LocalDataSource {
   // Future<RoutineDay> addRoutineDay(RoutineDay routineDay, int routineId) {}
   //
   // @override
-  // Future<List<RoutineDay>> getRoutineDaysOfRoutine(int routineId) {}
-
-  @override
-  Future<Exercise> getExercise(int exerciseId) {
-    return db.exercisesDao.getExercise(exerciseId);
-  }
-
-  @override
-  Future<List<Exercise>> getExercises() {
-    return db.exercisesDao.getExercises();
-  }
+  // Future<List<RoutineDay>> watchRoutineDaysOfRoutine(int routineId) {}
 
   @override
   Future<Exercise> addExercise({
@@ -90,5 +80,30 @@ class DatabaseDataSource implements LocalDataSource {
       instructions: instructions,
       musclesIds: musclesIds,
     );
+  }
+
+  @override
+  Stream<Routine> watchCurrentRoutine() {
+    return db.routinesDao.watchCurrentRoutine();
+  }
+
+  @override
+  Stream<Routine> watchRoutine(int id) {
+    return db.routinesDao.watchRoutine(id);
+  }
+
+  @override
+  Stream<List<Routine>> watchRoutines() {
+    return db.routinesDao.watchRoutines();
+  }
+
+  @override
+  Future<List<Exercise>> getExercises() {
+    return db.exercisesDao.getExercises();
+  }
+
+  @override
+  Future<Exercise> getExercise(int exerciseId) {
+    return db.exercisesDao.getExercise(exerciseId);
   }
 }

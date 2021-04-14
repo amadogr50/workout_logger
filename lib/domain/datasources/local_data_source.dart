@@ -1,20 +1,21 @@
 import 'package:workout_logger/domain/entities/exercise.dart';
+import 'package:workout_logger/domain/entities/routine.dart';
 
 abstract class LocalDataSource {
-  // /// Gets the current Routine.
-  // ///
-  // /// Throws [DoesNotExistException] if there's not a current [Routine].
-  // Future<Routine> getCurrentRoutine();
-  //
-  // /// Gets all saved Routines.
-  // ///
-  // /// Throws [DoesNotExistException] if there aren't any items.
-  // Future<List<Routine>> getRoutines();
-  //
-  // /// Gets the Routine with the given [id].
-  // ///
-  // /// Throws [DoesNotExistException] if there is not any Routine with the given [id].
-  // Future<Routine> getRoutine(int id);
+  /// Gets the current Routine.
+  ///
+  /// Throws [DoesNotExistException] if there's not a current [Routine].
+  Stream<Routine> watchCurrentRoutine();
+
+  /// Gets all saved Routines.
+  ///
+  /// Throws [DoesNotExistException] if there aren't any items.
+  Stream<List<Routine>> watchRoutines();
+
+  /// Gets the Routine with the given [id].
+  ///
+  /// Throws [DoesNotExistException] if there is not any Routine with the given [id].
+  Stream<Routine> watchRoutine(int id);
   //
   // /// Adds the given [routine] to local source.
   // Future<Routine> addRoutine(Routine routine);
