@@ -9,4 +9,6 @@ abstract class ExercisesRepository {
     required String instructions,
     required List<int> musclesIds,
   });
+
+  Stream<List<Exercise>> watchExercises();
 }

@@ -7,7 +7,7 @@ import 'package:workout_logger/domain/repositories/exercises_repository.dart';
 final _searchText = StateProvider.autoDispose((ref) => "");
 final _equipmentFilter = StateProvider.autoDispose((ref) => null);
 final _musclesFilter = StateProvider.autoDispose((ref) => null);
-final _exercises = StateProvider.autoDispose<List<Exercise>>((ref) => []);
+final _exercises = StateProvider.autoDispose<List<Exercise>>((ref) => ref.read(exercisesRepositoryProvider).);
 
 final filteredExercises = StateProvider.autoDispose<List<Exercise>>((ref) {
   final exercises = ref.watch(_exercises).state;

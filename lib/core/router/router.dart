@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:workout_logger/presentation/pages/add_exercises_page.dart';
 import 'package:workout_logger/presentation/pages/exercise__detail_page.dart';
 import 'package:workout_logger/presentation/pages/home_page.dart';
 import 'package:workout_logger/presentation/pages/routine_day_detail_page.dart';
@@ -13,7 +14,8 @@ import 'package:workout_logger/presentation/pages/routines_page.dart';
   AutoRoute(page: RoutineDetailPage),
   AutoRoute(page: RoutineDayDetailPage),
   AutoRoute(page: ExerciseDetailPage),
-  AutoRoute(page: RoutineDayAddEditPage),
+  AutoRoute(page: RoutineDayEditionPage),
   AutoRoute(page: RoutineEditionPage),
+  AutoRoute(page: AddExercisesPage),
 ])
 class $AppRouter {}

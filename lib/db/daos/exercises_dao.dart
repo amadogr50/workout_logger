@@ -237,6 +237,76 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
     });
   }
 
+  Stream<List<Exercise>> watchAllExercises() {
+    final exercisesModelsStream = (select(exercisesModel)).watch();
+
+    return exercisesModelsStream.switchMap((exercisesModels) {
+      final Map<int, ExerciseModel> exerciseIdToExerciseModel = {};
+      final Set<int> exercisesIds = {};
+      final Set<int> namesI18nIds = {};
+      final Set<int> instructionsI18nIds = {};
+      final Set<int> equipmentsIds = {};
+      final Set<int> exercisesTypesIds = {};
+
+      for (final exerciseModel in exercisesModels) {
+        exerciseIdToExerciseModel[exerciseModel.id] = exerciseModel;
+        exercisesIds.add(exerciseModel.id);
+        namesI18nIds.add(exerciseModel.i18nName);
+        if (exerciseModel.i18nInstructions != null) {
+          instructionsI18nIds.add(exerciseModel.i18nInstructions!);
+        }
+        equipmentsIds.add(exerciseModel.equipmentId);
+        exercisesTypesIds.add(exerciseModel.exerciseTypeId);
+      }
+
+      final Stream<Map<int, String>> nameIdToNameStream =
+          db.i18nDao.watchTranslations(namesI18nIds.toList());
+      final Stream<Map<int, String>> instructionIdToInstructionStream =
+          db.i18nDao.watchTranslations(instructionsI18nIds.toList());
+      final Stream<List<Equipment>> equipmentsStream =
+          watchEquipments(equipmentsIds.toList());
+      final Stream<List<ExerciseType>> exercisesTypesStream =
+          watchExercisesTypes(exercisesTypesIds.toList());
+      final Stream<Map<int, List<Muscle>>> exerciseIdToMusclesStream =
+          watchMusclesOfExercises(exercisesIds.toList());
+
+      return Rx.combineLatest5(
+        nameIdToNameStream,
+        instructionIdToInstructionStream,
+        equipmentsStream,
+        exerciseIdToMusclesStream,
+        exercisesTypesStream,
+        (
+          Map<int, String> nameIdToNames,
+          Map<int, String> instructionIdToInstructions,
+          List<Equipment> equipments,
+          Map<int, List<Muscle>> exerciseIdToMuscles,
+          List<ExerciseType> types,
+        ) {
+          final equipmentIdToEquipments = {
+            for (final equipment in equipments) equipment.id: equipment
+          };
+          final typeIdToTypes = {
+            for (final type in types) type.id: type,
+          };
+
+          return [
+            for (var exerciseModel in exercisesModels)
+              Exercise(
+                id: exerciseModel.id,
+                name: nameIdToNames[exerciseModel.i18nName]!,
+                instructions:
+                    instructionIdToInstructions[exerciseModel.i18nInstructions],
+                type: typeIdToTypes[exerciseModel.exerciseTypeId]!,
+                muscles: exerciseIdToMuscles[exerciseModel.id]!,
+                equipment: equipmentIdToEquipments[exerciseModel.equipmentId]!,
+              )
+          ];
+        },
+      );
+    });
+  }
+
   Future<ExerciseType> getExerciseType(int exerciseTypeId) async {
     final ExerciseTypeModel exerciseTypeModel =
         await (select(exercisesTypesModel)

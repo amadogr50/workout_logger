@@ -791,3 +791,31 @@ class SmallCaps extends StatelessWidget {
     );
   }
 }
+
+class Action extends StatelessWidget {
+  final String data;
+  final Color? color;
+
+  FontWeight get fontWeight => FontWeight.bold;
+
+  double get fontSize => 18;
+
+  double get height => 20;
+
+  const Action(
+    this.data, {
+    Key? key,
+    this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseStaticText(
+      data,
+      fontWeight: fontWeight,
+      color: color,
+      fontSize: fontSize,
+      height: height,
+    );
+  }
+}

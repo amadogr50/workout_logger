@@ -1,8 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:workout_logger/domain/entities/routine_item.dart';
 
-class RoutineDay extends Equatable {
-  final int id;
+class RoutineDay {
+  final int? id;
   final String name;
   final List<RoutineItem> items;
   final int order;
@@ -14,6 +13,8 @@ class RoutineDay extends Equatable {
     required this.order,
   });
 
-  @override
-  List<Object> get props => [name, items, order];
+  RoutineDay.empty({required this.order})
+      : id = null,
+        name = '',
+        items = [];
 }

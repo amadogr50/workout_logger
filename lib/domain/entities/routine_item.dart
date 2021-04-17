@@ -1,9 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/set.dart';
 
-class RoutineItem extends Equatable {
-  final int id;
+class RoutineItem {
+  final int? id;
   final Exercise exercise;
   final String note;
   final int restDuration;
@@ -20,8 +19,4 @@ class RoutineItem extends Equatable {
     required this.order,
     required this.groupNumber,
   });
-
-  @override
-  List<Object> get props =>
-      [exercise, note, restDuration, sets, order, groupNumber];
 }

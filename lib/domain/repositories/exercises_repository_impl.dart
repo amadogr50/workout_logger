@@ -23,4 +23,9 @@ class ExercisesRepositoryImpl implements ExercisesRepository {
       musclesIds: musclesIds,
     );
   }
+
+  @override
+  Stream<List<Exercise>> watchExercises() {
+    return localDataSource.watchExercises();
+  }
 }

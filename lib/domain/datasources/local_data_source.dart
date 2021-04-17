@@ -76,6 +76,8 @@ abstract class LocalDataSource {
 
   Future<List<Exercise>> getExercises();
 
+  Stream<List<Exercise>> watchExercises();
+
   Future<Exercise> addExercise({
     required String name,
     required int exerciseTypeId,

@@ -6,6 +6,8 @@
 
 import 'package:auto_route/auto_route.dart' as _i1;
 
+import '../../domain/entities/routine_day.dart' as _i10;
+import '../../presentation/pages/add_exercises_page.dart' as _i9;
 import '../../presentation/pages/exercise__detail_page.dart' as _i6;
 import '../../presentation/pages/home_page.dart' as _i2;
 import '../../presentation/pages/routine_day_detail_page.dart' as _i5;
@@ -34,12 +36,18 @@ class AppRouter extends _i1.RootStackRouter {
     ExerciseDetailPageRoute.name: (entry) {
       return _i1.MaterialPageX(entry: entry, child: _i6.ExerciseDetailPage());
     },
-    RoutineDayAddEditPageRoute.name: (entry) {
+    RoutineDayEditionPageRoute.name: (entry) {
+      var args = entry.routeData.argsAs<RoutineDayEditionPageRouteArgs>();
       return _i1.MaterialPageX(
-          entry: entry, child: _i7.RoutineDayAddEditPage());
+          entry: entry, child: _i7.RoutineDayEditionPage(day: args.day));
     },
     RoutineEditionPageRoute.name: (entry) {
       return _i1.MaterialPageX(entry: entry, child: _i8.RoutineEditionPage());
+    },
+    AddExercisesPageRoute.name: (entry) {
+      var args = entry.routeData.argsAs<AddExercisesPageRouteArgs>();
+      return _i1.MaterialPageX(
+          entry: entry, child: _i9.AddExercisesPage(day: args.day));
     }
   };
 
@@ -53,10 +61,11 @@ class AppRouter extends _i1.RootStackRouter {
             path: '/routine-day-detail-page'),
         _i1.RouteConfig(ExerciseDetailPageRoute.name,
             path: '/exercise-detail-page'),
-        _i1.RouteConfig(RoutineDayAddEditPageRoute.name,
-            path: '/routine-day-add-edit-page'),
+        _i1.RouteConfig(RoutineDayEditionPageRoute.name,
+            path: '/routine-day-edition-page'),
         _i1.RouteConfig(RoutineEditionPageRoute.name,
-            path: '/routine-edition-page')
+            path: '/routine-edition-page'),
+        _i1.RouteConfig(AddExercisesPageRoute.name, path: '/add-exercises-page')
       ];
 }
 
@@ -91,15 +100,40 @@ class ExerciseDetailPageRoute extends _i1.PageRouteInfo {
   static const String name = 'ExerciseDetailPageRoute';
 }
 
-class RoutineDayAddEditPageRoute extends _i1.PageRouteInfo {
-  const RoutineDayAddEditPageRoute()
-      : super(name, path: '/routine-day-add-edit-page');
+class RoutineDayEditionPageRoute
+    extends _i1.PageRouteInfo<RoutineDayEditionPageRouteArgs> {
+  RoutineDayEditionPageRoute({required _i10.RoutineDay day})
+      : super(name,
+            path: '/routine-day-edition-page',
+            args: RoutineDayEditionPageRouteArgs(day: day));
 
-  static const String name = 'RoutineDayAddEditPageRoute';
+  static const String name = 'RoutineDayEditionPageRoute';
+}
+
+class RoutineDayEditionPageRouteArgs {
+  const RoutineDayEditionPageRouteArgs({required this.day});
+
+  final _i10.RoutineDay day;
 }
 
 class RoutineEditionPageRoute extends _i1.PageRouteInfo {
   const RoutineEditionPageRoute() : super(name, path: '/routine-edition-page');
 
   static const String name = 'RoutineEditionPageRoute';
+}
+
+class AddExercisesPageRoute
+    extends _i1.PageRouteInfo<AddExercisesPageRouteArgs> {
+  AddExercisesPageRoute({required _i10.RoutineDay day})
+      : super(name,
+            path: '/add-exercises-page',
+            args: AddExercisesPageRouteArgs(day: day));
+
+  static const String name = 'AddExercisesPageRoute';
+}
+
+class AddExercisesPageRouteArgs {
+  const AddExercisesPageRouteArgs({required this.day});
+
+  final _i10.RoutineDay day;
 }

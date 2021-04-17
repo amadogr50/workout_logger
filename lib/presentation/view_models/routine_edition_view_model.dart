@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:moor/moor.dart';
-import 'package:workout_logger/db/db.dart';
+import 'package:workout_logger/domain/entities/routine.dart';
+import 'package:workout_logger/domain/entities/routine_day.dart';
 
 class RoutineEditionViewModel extends ChangeNotifier {
-  final List<RoutineDaysModelCompanion> _days = [];
+  final Routine routine;
 
-  UnmodifiableListView<RoutineDaysModelCompanion> get days =>
-      UnmodifiableListView(_days);
+  RoutineEditionViewModel(this.routine);
 
   void addDay() {
-    _days.add(RoutineDaysModelCompanion(order: Value(_days.length++)));
+    routine.days.add(RoutineDay.empty(order: routine.days.length - 1));
+    notifyListeners();
+  }
+
+  void removeDay(int dayIndex) {
+    routine.days.removeAt(dayIndex);
     notifyListeners();
   }
 }
 
 final routineEditionViewModelProvider =
-    ChangeNotifierProvider<RoutineEditionViewModel>(
-        (ref) => RoutineEditionViewModel());
+    ChangeNotifierProvider.family<RoutineEditionViewModel, Routine?>(
+  (ref, routine) {
+    if (routine == null) {
+      return RoutineEditionViewModel(Routine.empty());
+    }
+
+    return RoutineEditionViewModel(routine);
+  },
+);

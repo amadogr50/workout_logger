@@ -1,10 +1,4 @@
 import 'package:moor/moor.dart';
-import 'package:workout_logger/domain/entities/exercise.dart';
-import 'package:workout_logger/domain/entities/routine.dart';
-import 'package:workout_logger/domain/entities/routine_day.dart';
-import 'package:workout_logger/domain/entities/routine_item.dart';
-
-import '../db.dart';
 
 @DataClassName('RoutineModel')
 class RoutinesModel extends Table {
@@ -16,26 +10,6 @@ class RoutinesModel extends Table {
 
   @override
   String get tableName => 'routines';
-
-  static RoutinesModelCompanion createCompanion(Routine routine) {
-    return RoutinesModelCompanion(
-      id: Value(routine.id),
-      name: Value(routine.name),
-      current: Value(routine.current),
-    );
-  }
-
-  static Routine createEntity(
-    RoutineModel routineModel,
-    List<RoutineDay> routineDays,
-  ) {
-    return Routine(
-      id: routineModel.id,
-      name: routineModel.name,
-      current: routineModel.current,
-      days: routineDays,
-    );
-  }
 }
 
 @DataClassName('RoutineDayModel')
@@ -51,28 +25,6 @@ class RoutineDaysModel extends Table {
 
   @override
   String get tableName => 'routine_days';
-
-  static RoutineDaysModelCompanion createCompanion(
-      RoutineDay routineDay, int routineId) {
-    return RoutineDaysModelCompanion(
-      id: Value(routineDay.id),
-      routineId: Value(routineId),
-      name: Value(routineDay.name),
-      order: Value(routineDay.order),
-    );
-  }
-
-  static RoutineDay createEntity(
-    RoutineDayModel routineDaysModel,
-    List<RoutineItem> routineItems,
-  ) {
-    return RoutineDay(
-      id: routineDaysModel.id,
-      name: routineDaysModel.name,
-      items: routineItems,
-      order: routineDaysModel.order,
-    );
-  }
 }
 
 @DataClassName('RoutineItemModel')
@@ -95,33 +47,4 @@ class RoutineItemsModel extends Table {
 
   @override
   String get tableName => 'routine_items';
-
-  static RoutineItemsModelCompanion createCompanion(
-    RoutineItem routineItem,
-    int routineDayId,
-  ) {
-    return RoutineItemsModelCompanion(
-      id: Value(routineItem.id),
-      routineDayId: Value(routineDayId),
-      exerciseId: Value(routineItem.exercise.id),
-      note: Value(routineItem.note),
-      restDuration: Value(routineItem.restDuration),
-      order: Value(routineItem.order),
-      groupNumber: Value(routineItem.groupNumber),
-    );
-  }
-
-  static RoutineItem createEntity(
-      RoutineItemModel routineItemModel, Exercise exercise) {
-    return RoutineItem(
-      id: routineItemModel.id,
-      exercise: exercise,
-      note: routineItemModel.note,
-      restDuration: routineItemModel.restDuration,
-      sets: const [], // TODO: Implement Sets
-      // TODO: Implement sets
-      order: routineItemModel.order,
-      groupNumber: routineItemModel.groupNumber,
-    );
-  }
 }
