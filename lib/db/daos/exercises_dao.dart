@@ -241,6 +241,7 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
     final exercisesModelsStream = (select(exercisesModel)).watch();
 
     return exercisesModelsStream.switchMap((exercisesModels) {
+      print("exercisesModelsStream");
       final Map<int, ExerciseModel> exerciseIdToExerciseModel = {};
       final Set<int> exercisesIds = {};
       final Set<int> namesI18nIds = {};

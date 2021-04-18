@@ -1,7 +1,6 @@
 import 'package:workout_logger/domain/entities/exercise.dart';
 
 abstract class ExercisesRepository {
-
   Future<Exercise> addExercise({
     required String name,
     required int exerciseTypeId,
@@ -10,5 +9,9 @@ abstract class ExercisesRepository {
     required List<int> musclesIds,
   });
 
-  Stream<List<Exercise>> watchExercises();
+  Stream<List<Exercise>> watchExercises({
+    String? searchText,
+    int? muscleId,
+    int? equipmentId,
+  });
 }

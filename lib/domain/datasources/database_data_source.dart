@@ -99,7 +99,7 @@ class DatabaseDataSource implements LocalDataSource {
 
   @override
   Stream<List<Exercise>> watchExercises() {
-    return db.exercisesDao.watchExercises();
+    return db.exercisesDao.watchAllExercises();
   }
 
   @override
