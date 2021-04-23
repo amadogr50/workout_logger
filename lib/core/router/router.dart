@@ -6,6 +6,7 @@ import 'package:workout_logger/presentation/pages/routine_day_detail_page.dart';
 import 'package:workout_logger/presentation/pages/routine_day_edition_page.dart';
 import 'package:workout_logger/presentation/pages/routine_detail_page.dart';
 import 'package:workout_logger/presentation/pages/routine_edition_page.dart';
+import 'package:workout_logger/presentation/pages/routine_item_edition_page.dart';
 import 'package:workout_logger/presentation/pages/routines_page.dart';
 
 @MaterialAutoRouter(routes: [
@@ -17,5 +18,6 @@ import 'package:workout_logger/presentation/pages/routines_page.dart';
   AutoRoute(page: RoutineDayEditionPage),
   AutoRoute(page: RoutineEditionPage),
   AutoRoute(page: AddExercisesPage),
+  AutoRoute(page: RoutineItemEditionPage),
 ])
 class $AppRouter {}

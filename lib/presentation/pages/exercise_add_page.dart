@@ -51,11 +51,11 @@ class ExerciseAddPage extends ConsumerWidget {
                 key: _form,
                 child: Column(
                   children: [
-                    const FormTextField(
+                    FormTextField(
                       name: name,
                       labelText: 'Name',
                     ),
-                    const FormTextField(
+                    FormTextField(
                       name: instructions,
                       labelText: 'Instructions',
                     ),

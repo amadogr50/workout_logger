@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:workout_logger/db/daos/routine_days_dao.dart';
 import 'package:workout_logger/db/daos/routine_items_dao.dart';
+import 'package:workout_logger/domain/entities/set.dart';
 
 import 'daos/exercises_dao.dart';
 import 'daos/i18n_dao.dart';

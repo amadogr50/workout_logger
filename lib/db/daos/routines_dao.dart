@@ -1,8 +1,10 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:workout_logger/db/tables/routines.dart';
 import 'package:workout_logger/domain/entities/routine.dart';
 import 'package:workout_logger/domain/entities/routine_day.dart';
+import 'package:workout_logger/domain/entities/routine_with_days.dart';
 
 import '../db.dart';
 
@@ -36,9 +38,10 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
       ) =>
           Routine(
         id: routineModel.id,
+        note: routineModel.note,
         name: routineModel.name,
         current: routineModel.current,
-        days: routineDays,
+        days: BuiltList(routineDays),
       ),
     );
   }
@@ -70,8 +73,41 @@ class RoutinesDao extends DatabaseAccessor<MyDatabase> with _$RoutinesDaoMixin {
             Routine(
               id: routinesMap[id]!.id,
               name: routinesMap[id]!.name,
+              note: routinesMap[id]!.note,
               current: routinesMap[id]!.current,
-              days: routineDaysMap[id]!,
+              days: BuiltList(routineDaysMap[id]!),
+            )
+        ];
+      });
+    });
+  }
+
+  Stream<List<RoutineWithDays>> watchRoutinesWithDays() {
+    final routinesStream = select(routinesModel).watch();
+
+    return routinesStream.switchMap((routines) {
+      final Map<int, RoutineModel> routinesMap = {
+        for (var routineModel in routines) routineModel.id: routineModel
+      };
+
+      final ids = routinesMap.keys.toList();
+
+      final daysStream = (select(routineDaysModel)
+            ..where((t) => t.routineId.isIn(ids)))
+          .watch();
+
+      return daysStream.map((days) {
+        final daysMap = <int, List<RoutineDayModel>>{};
+
+        for (final day in days) {
+          daysMap.putIfAbsent(day.routineId, () => []).add(day);
+        }
+
+        return [
+          for (var id in ids)
+            RoutineWithDays.fromModel(
+              routine: routinesMap[id]!,
+              days: daysMap[id] ?? [],
             )
         ];
       });

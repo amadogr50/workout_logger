@@ -1,9 +1,12 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:workout_logger/db/db.dart';
 import 'package:workout_logger/db/tables/routines.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/routine_item.dart';
+import 'package:workout_logger/domain/entities/routine_item_with_exercise.dart';
 
 part 'routine_items_dao.g.dart';
 
@@ -55,8 +58,7 @@ class RoutineItemsDao extends DatabaseAccessor<MyDatabase>
             id: itemModel.id,
             exercise: exerciseIdToExercise[itemModel.exerciseId]!,
             note: itemModel.note,
-            restDuration: itemModel.restDuration,
-            sets: [], // TODO: Implement sets
+            sets: BuiltList(), // TODO: Implement sets
             order: itemModel.order,
             groupNumber: itemModel.groupNumber,
           );
@@ -88,5 +90,24 @@ class RoutineItemsDao extends DatabaseAccessor<MyDatabase>
       groupNumber: Value(routineItemModel.groupNumber),
     );
     await addRoutineItem(routineItem);
+  }
+
+  Future<List<RoutineItemModel>> getItemsOfDay(int routineId) async {
+    return (select(routineItemsModel)
+          ..where((t) => t.routineDayId.equals(routineId)))
+        .get();
+  }
+
+  Future<RoutineItemWithExercise> getRoutineItemWithExercise(
+      int routineItemId) async {
+    final routineItemModel = await (select(routineItemsModel)
+          ..where((t) => t.routineDayId.equals(routineItemId)))
+        .getSingle();
+
+    final exercise =
+        await db.exercisesDao.getExercise(routineItemModel.exerciseId);
+
+    return RoutineItemWithExercise(
+        routineItem: Left(routineItemModel), exercise: exercise);
   }
 }

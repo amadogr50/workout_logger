@@ -5,8 +5,11 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:built_collection/built_collection.dart' as _i12;
 
-import '../../domain/entities/routine_day.dart' as _i10;
+import '../../domain/entities/exercise.dart' as _i13;
+import '../../domain/entities/routine_day.dart' as _i11;
+import '../../domain/entities/routine_item.dart' as _i14;
 import '../../presentation/pages/add_exercises_page.dart' as _i9;
 import '../../presentation/pages/exercise__detail_page.dart' as _i6;
 import '../../presentation/pages/home_page.dart' as _i2;
@@ -14,6 +17,7 @@ import '../../presentation/pages/routine_day_detail_page.dart' as _i5;
 import '../../presentation/pages/routine_day_edition_page.dart' as _i7;
 import '../../presentation/pages/routine_detail_page.dart' as _i4;
 import '../../presentation/pages/routine_edition_page.dart' as _i8;
+import '../../presentation/pages/routine_item_edition_page.dart' as _i10;
 import '../../presentation/pages/routines_page.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -39,7 +43,9 @@ class AppRouter extends _i1.RootStackRouter {
     RoutineDayEditionPageRoute.name: (entry) {
       var args = entry.routeData.argsAs<RoutineDayEditionPageRouteArgs>();
       return _i1.MaterialPageX(
-          entry: entry, child: _i7.RoutineDayEditionPage(day: args.day));
+          entry: entry,
+          child: _i7.RoutineDayEditionPage(
+              routineDay: args.routineDay, onConfirm: args.onConfirm));
     },
     RoutineEditionPageRoute.name: (entry) {
       return _i1.MaterialPageX(entry: entry, child: _i8.RoutineEditionPage());
@@ -47,7 +53,16 @@ class AppRouter extends _i1.RootStackRouter {
     AddExercisesPageRoute.name: (entry) {
       var args = entry.routeData.argsAs<AddExercisesPageRouteArgs>();
       return _i1.MaterialPageX(
-          entry: entry, child: _i9.AddExercisesPage(day: args.day));
+          entry: entry,
+          child: _i9.AddExercisesPage(
+              routineDay: args.routineDay, onConfirm: args.onConfirm));
+    },
+    RoutineItemEditionPageRoute.name: (entry) {
+      var args = entry.routeData.argsAs<RoutineItemEditionPageRouteArgs>();
+      return _i1.MaterialPageX(
+          entry: entry,
+          child: _i10.RoutineItemEditionPage(
+              routineItem: args.routineItem, onConfirm: args.onConfirm));
     }
   };
 
@@ -65,7 +80,10 @@ class AppRouter extends _i1.RootStackRouter {
             path: '/routine-day-edition-page'),
         _i1.RouteConfig(RoutineEditionPageRoute.name,
             path: '/routine-edition-page'),
-        _i1.RouteConfig(AddExercisesPageRoute.name, path: '/add-exercises-page')
+        _i1.RouteConfig(AddExercisesPageRoute.name,
+            path: '/add-exercises-page'),
+        _i1.RouteConfig(RoutineItemEditionPageRoute.name,
+            path: '/routine-item-edition-page')
       ];
 }
 
@@ -102,18 +120,24 @@ class ExerciseDetailPageRoute extends _i1.PageRouteInfo {
 
 class RoutineDayEditionPageRoute
     extends _i1.PageRouteInfo<RoutineDayEditionPageRouteArgs> {
-  RoutineDayEditionPageRoute({required _i10.RoutineDay day})
+  RoutineDayEditionPageRoute(
+      {required _i11.RoutineDay routineDay,
+      required void Function(_i11.RoutineDay) onConfirm})
       : super(name,
             path: '/routine-day-edition-page',
-            args: RoutineDayEditionPageRouteArgs(day: day));
+            args: RoutineDayEditionPageRouteArgs(
+                routineDay: routineDay, onConfirm: onConfirm));
 
   static const String name = 'RoutineDayEditionPageRoute';
 }
 
 class RoutineDayEditionPageRouteArgs {
-  const RoutineDayEditionPageRouteArgs({required this.day});
+  const RoutineDayEditionPageRouteArgs(
+      {required this.routineDay, required this.onConfirm});
 
-  final _i10.RoutineDay day;
+  final _i11.RoutineDay routineDay;
+
+  final void Function(_i11.RoutineDay) onConfirm;
 }
 
 class RoutineEditionPageRoute extends _i1.PageRouteInfo {
@@ -124,16 +148,44 @@ class RoutineEditionPageRoute extends _i1.PageRouteInfo {
 
 class AddExercisesPageRoute
     extends _i1.PageRouteInfo<AddExercisesPageRouteArgs> {
-  AddExercisesPageRoute({required _i10.RoutineDay day})
+  AddExercisesPageRoute(
+      {required _i11.RoutineDay routineDay,
+      required void Function(_i12.BuiltSet<_i13.Exercise>) onConfirm})
       : super(name,
             path: '/add-exercises-page',
-            args: AddExercisesPageRouteArgs(day: day));
+            args: AddExercisesPageRouteArgs(
+                routineDay: routineDay, onConfirm: onConfirm));
 
   static const String name = 'AddExercisesPageRoute';
 }
 
 class AddExercisesPageRouteArgs {
-  const AddExercisesPageRouteArgs({required this.day});
+  const AddExercisesPageRouteArgs(
+      {required this.routineDay, required this.onConfirm});
 
-  final _i10.RoutineDay day;
+  final _i11.RoutineDay routineDay;
+
+  final void Function(_i12.BuiltSet<_i13.Exercise>) onConfirm;
+}
+
+class RoutineItemEditionPageRoute
+    extends _i1.PageRouteInfo<RoutineItemEditionPageRouteArgs> {
+  RoutineItemEditionPageRoute(
+      {required _i14.RoutineItem routineItem,
+      required void Function(_i14.RoutineItem) onConfirm})
+      : super(name,
+            path: '/routine-item-edition-page',
+            args: RoutineItemEditionPageRouteArgs(
+                routineItem: routineItem, onConfirm: onConfirm));
+
+  static const String name = 'RoutineItemEditionPageRoute';
+}
+
+class RoutineItemEditionPageRouteArgs {
+  const RoutineItemEditionPageRouteArgs(
+      {required this.routineItem, required this.onConfirm});
+
+  final _i14.RoutineItem routineItem;
+
+  final void Function(_i14.RoutineItem) onConfirm;
 }

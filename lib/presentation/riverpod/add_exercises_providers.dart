@@ -1,8 +1,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:workout_logger/domain/entities/day_with_items.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
+import 'package:workout_logger/domain/entities/routine_day.dart';
 import 'package:workout_logger/domain/providers/exercises_repository_provider.dart';
+import 'package:workout_logger/domain/providers/routines_repository_provider.dart';
+import 'package:workout_logger/domain/repositories/routines_repository.dart';
 
 final searchTextController =
     StateNotifierProvider.autoDispose<SearchTextController, String?>(
@@ -68,19 +70,33 @@ final filteredExercisesProvider =
       );
 });
 
-class SelectedExercisesController extends StateNotifier<BuiltSet<int>> {
-  SelectedExercisesController({DayWithItems? day})
-      : super(BuiltSet(day?.items ?? []));
+class SelectedExercisesController extends StateNotifier<BuiltSet<Exercise>> {
+  final RoutinesRepository routinesRepository;
 
-  void toggleExercise(int exerciseId) {
-    if (state.contains(exerciseId)) {
-      state = state.rebuild((s) => s.remove(exerciseId));
+  SelectedExercisesController({
+    required this.routinesRepository,
+    required RoutineDay routineDay,
+  }) : super(BuiltSet()) {
+    _init(routineDay);
+  }
+
+  Future<void> _init(RoutineDay routineDay) async {
+    state = BuiltSet(routineDay.items.map((item) => item.exercise));
+  }
+
+  void toggleExercise(Exercise exercise) {
+    if (state.contains(exercise)) {
+      state = state.rebuild((s) => s.remove(exercise));
     } else {
-      state = state.rebuild((s) => s.add(exerciseId));
+      state = state.rebuild((s) => s.add(exercise));
     }
   }
 }
 
 final selectedExercisesController = StateNotifierProvider.autoDispose
-    .family<SelectedExercisesController, BuiltSet<int>, DayWithItems?>(
-        (ref, day) => SelectedExercisesController(day: day));
+    .family<SelectedExercisesController, BuiltSet<Exercise>, RoutineDay>(
+  (ref, routineDay) => SelectedExercisesController(
+    routinesRepository: ref.read(routinesRepositoryProvider),
+    routineDay: routineDay,
+  ),
+);

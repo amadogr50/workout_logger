@@ -1,8 +1,8 @@
 import 'package:workout_logger/db/db.dart';
+import 'package:workout_logger/domain/datasources/local_data_source.dart';
+import 'package:workout_logger/domain/entities/day_with_items.dart';
 import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/routine.dart';
-
-import 'local_data_source.dart';
 
 class DatabaseDataSource implements LocalDataSource {
   final MyDatabase db;
@@ -110,5 +110,15 @@ class DatabaseDataSource implements LocalDataSource {
   @override
   Future<Exercise> getExercise(int exerciseId) {
     return db.exercisesDao.getExercise(exerciseId);
+  }
+
+  @override
+  Future<List<DayWithItems>> getDaysWithItemsOfRoutine(int routineId) {
+    return db.routineDaysDao.getDaysWithItemsOfRoutine(routineId);
+  }
+
+  @override
+  Future<List<RoutineItemModel>> getItemsOfDay(int routineId) {
+    return db.routineItemsDao.getItemsOfDay(routineId);
   }
 }

@@ -1,5 +1,8 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:workout_logger/domain/entities/exercise.dart';
 import 'package:workout_logger/domain/entities/routine_day.dart';
 import 'package:workout_logger/presentation/riverpod/add_exercises_providers.dart';
 import 'package:workout_logger/presentation/widgets/edition_app_bar.dart';
@@ -8,9 +11,10 @@ import 'package:workout_logger/theme/dimensions.dart';
 import 'package:workout_logger/theme/typography.dart';
 
 class AddExercisesPage extends StatelessWidget {
-  final RoutineDay day;
+  final void Function(BuiltSet<Exercise> selectedExercises) onConfirm;
+  final RoutineDay routineDay;
 
-  const AddExercisesPage({required this.day});
+  const AddExercisesPage({required this.routineDay, required this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +22,13 @@ class AddExercisesPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           EditionAppBar(
-            onConfirm: () {},
-            onCancel: () {},
+            onConfirm: () {
+              onConfirm(context.read(selectedExercisesController(routineDay)));
+              AutoRouter.of(context).pop();
+            },
+            onCancel: () {
+              AutoRouter.of(context).pop();
+            },
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: Dimensions.s),
@@ -38,7 +47,7 @@ class AddExercisesPage extends StatelessWidget {
             builder: (context, watch, child) {
               final exercises = watch(filteredExercisesProvider);
               final selectedExercises =
-                  watch(selectedExercisesController(null));
+                  watch(selectedExercisesController(routineDay));
 
               return SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.s),
@@ -50,13 +59,12 @@ class AddExercisesPage extends StatelessWidget {
                       children: [
                         AddExerciseItem(
                           exercise: data[index],
-                          isSelected:
-                              selectedExercises.contains(data[index].id),
+                          isSelected: selectedExercises.contains(data[index]),
                           onTap: () {
                             context
-                                .read(
-                                    selectedExercisesController(null).notifier)
-                                .toggleExercise(data[index].id!);
+                                .read(selectedExercisesController(routineDay)
+                                    .notifier)
+                                .toggleExercise(data[index]);
                           },
                         ),
                         const Divider(

@@ -1,14 +1,16 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:workout_logger/db/db.dart';
 import 'package:workout_logger/db/tables/routines.dart';
+import 'package:workout_logger/domain/entities/day_with_items.dart';
 import 'package:workout_logger/domain/entities/routine_day.dart';
 import 'package:workout_logger/domain/entities/routine_item.dart';
 
 part 'routine_days_dao.g.dart';
 
 @UseDao(
-  tables: [RoutineDaysModel],
+  tables: [RoutineDaysModel, RoutineItemsModel],
 )
 class RoutineDaysDao extends DatabaseAccessor<MyDatabase>
     with _$RoutineDaysDaoMixin {
@@ -40,7 +42,8 @@ class RoutineDaysDao extends DatabaseAccessor<MyDatabase>
             RoutineDay(
               id: routineDaysMap[id]!.id,
               name: routineDaysMap[id]!.name,
-              items: routineItemsMap[id]!,
+              note: routineDaysMap[id]!.note,
+              items: BuiltList(routineItemsMap[id]!),
               order: routineDaysMap[id]!.order,
             )
         ];
@@ -77,7 +80,8 @@ class RoutineDaysDao extends DatabaseAccessor<MyDatabase>
           final routineDay = RoutineDay(
             id: routineDayModel.id,
             name: routineDayModel.name,
-            items: routineDayIdToRoutineItems[routineDayId]!,
+            note: routineDayModel.note,
+            items: BuiltList(routineDayIdToRoutineItems[routineDayId]!),
             order: routineDayModel.order,
           );
 
@@ -105,5 +109,19 @@ class RoutineDaysDao extends DatabaseAccessor<MyDatabase>
       order: Value(routineDayModel.order),
     );
     await into(routineDaysModel).insert(routineDay);
+  }
+
+  Future<List<DayWithItems>> getDaysWithItemsOfRoutine(int routineId) async {
+    final days = await (select(routineDaysModel)
+          ..where((t) => t.routineId.equals(routineId)))
+        .get();
+
+    return Future.wait(days.map((day) async {
+      final items = await (select(routineItemsModel)
+            ..where((t) => t.routineDayId.equals(day.id)))
+          .get();
+
+      return DayWithItems.fromModel(day: day, items: items);
+    }).toList());
   }
 }
