@@ -173,8 +173,8 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
     return exercisesModelsStream.switchMap((exercisesModels) {
       final Map<int, ExerciseModel> exerciseIdToExerciseModel = {};
       final Set<int> exercisesIds = {};
-      final Set<int> namesI18nIds = {};
-      final Set<int> instructionsI18nIds = {};
+      final Set<String> namesI18nIds = {};
+      final Set<String> instructionsI18nIds = {};
       final Set<int> equipmentsIds = {};
       final Set<int> exercisesTypesIds = {};
 
@@ -189,9 +189,9 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
         exercisesTypesIds.add(exerciseModel.exerciseTypeId);
       }
 
-      final Stream<Map<int, String>> nameIdToNameStream =
+      final Stream<Map<String, String>> nameIdToNameStream =
           db.i18nDao.watchTranslations(namesI18nIds.toList());
-      final Stream<Map<int, String>> instructionIdToInstructionStream =
+      final Stream<Map<String, String>> instructionIdToInstructionStream =
           db.i18nDao.watchTranslations(instructionsI18nIds.toList());
       final Stream<List<Equipment>> equipmentsStream =
           watchEquipments(equipmentsIds.toList());
@@ -207,8 +207,8 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
         exerciseIdToMusclesStream,
         exercisesTypesStream,
         (
-          Map<int, String> nameIdToNames,
-          Map<int, String> instructionIdToInstructions,
+          Map<String, String> nameIdToNames,
+          Map<String, String> instructionIdToInstructions,
           List<Equipment> equipments,
           Map<int, List<Muscle>> exerciseIdToMuscles,
           List<ExerciseType> types,
@@ -244,8 +244,8 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
       print("exercisesModelsStream");
       final Map<int, ExerciseModel> exerciseIdToExerciseModel = {};
       final Set<int> exercisesIds = {};
-      final Set<int> namesI18nIds = {};
-      final Set<int> instructionsI18nIds = {};
+      final Set<String> namesI18nIds = {};
+      final Set<String> instructionsI18nIds = {};
       final Set<int> equipmentsIds = {};
       final Set<int> exercisesTypesIds = {};
 
@@ -260,9 +260,9 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
         exercisesTypesIds.add(exerciseModel.exerciseTypeId);
       }
 
-      final Stream<Map<int, String>> nameIdToNameStream =
+      final Stream<Map<String, String>> nameIdToNameStream =
           db.i18nDao.watchTranslations(namesI18nIds.toList());
-      final Stream<Map<int, String>> instructionIdToInstructionStream =
+      final Stream<Map<String, String>> instructionIdToInstructionStream =
           db.i18nDao.watchTranslations(instructionsI18nIds.toList());
       final Stream<List<Equipment>> equipmentsStream =
           watchEquipments(equipmentsIds.toList());
@@ -278,8 +278,8 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
         exerciseIdToMusclesStream,
         exercisesTypesStream,
         (
-          Map<int, String> nameIdToNames,
-          Map<int, String> instructionIdToInstructions,
+          Map<String, String> nameIdToNames,
+          Map<String, String> instructionIdToInstructions,
           List<Equipment> equipments,
           Map<int, List<Muscle>> exerciseIdToMuscles,
           List<ExerciseType> types,
@@ -349,13 +349,13 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
           ..where((t) => t.id.isIn(exercisesTypesIds)))
         .watch();
     return exercisesTypesStream.switchMap((exercisesTypes) {
-      final Set<int> namesI18nIds = {};
+      final Set<String> namesI18nIds = {};
 
       for (final exerciseTypeModel in exercisesTypes) {
         namesI18nIds.add(exerciseTypeModel.i18nName);
       }
 
-      final Stream<Map<int, String>> nameIdToNameStream =
+      final Stream<Map<String, String>> nameIdToNameStream =
           db.i18nDao.watchTranslations(namesI18nIds.toList());
 
       return nameIdToNameStream.map((nameIdToName) {
@@ -406,13 +406,13 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
           ..where((t) => t.id.isIn(equipmentsIds)))
         .watch();
     return equipmentsModelsStream.switchMap((equipmentsModels) {
-      final Set<int> namesI18nIds = {};
+      final Set<String> namesI18nIds = {};
 
       for (final equipmentModel in equipmentsModels) {
         namesI18nIds.add(equipmentModel.i18nName);
       }
 
-      final Stream<Map<int, String>> nameIdToNameStream =
+      final Stream<Map<String, String>> nameIdToNameStream =
           db.i18nDao.watchTranslations(namesI18nIds.toList());
 
       return nameIdToNameStream.map((nameIdToName) {
@@ -459,13 +459,13 @@ class ExercisesDao extends DatabaseAccessor<MyDatabase>
     final Stream<List<MuscleModel>> musclesModelsStream =
         (select(musclesModel)..where((t) => t.id.isIn(musclesIds))).watch();
     return musclesModelsStream.switchMap((musclesModels) {
-      final Set<int> namesI18nIds = {};
+      final Set<String> namesI18nIds = {};
 
       for (final muscleModel in musclesModels) {
         namesI18nIds.add(muscleModel.i18nName);
       }
 
-      final Stream<Map<int, String>> nameIdToNameStream =
+      final Stream<Map<String, String>> nameIdToNameStream =
           db.i18nDao.watchTranslations(namesI18nIds.toList());
 
       return nameIdToNameStream.map((nameIdToName) {

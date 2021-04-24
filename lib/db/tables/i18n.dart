@@ -1,15 +1,21 @@
 import 'package:moor/moor.dart';
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
 
 class I18n extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text().clientDefault(() => uuid.v4())();
+
+  @override
+  Set<Column>? get primaryKey => {id};
 }
 
 class Translations extends Table {
-  IntColumn get i18nId =>
-      integer().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn get i18nId =>
+      text().customConstraint('NULL REFERENCES i18n(id)')();
 
-  IntColumn get localeId =>
-      integer().customConstraint('NULL REFERENCES locales(id)')();
+  TextColumn get localeId =>
+      text().customConstraint('NULL REFERENCES locales(id)')();
 
   TextColumn get textTranslation => text()();
 
@@ -18,7 +24,8 @@ class Translations extends Table {
 }
 
 class Locales extends Table {
-  IntColumn get id => integer().autoIncrement()();
-
   TextColumn get locale => text()();
+
+  @override
+  Set<Column>? get primaryKey => {locale};
 }

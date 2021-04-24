@@ -16,11 +16,11 @@ class ExercisesModel extends Table {
   IntColumn get equipmentId =>
       integer().customConstraint('NULL REFERENCES equipments(id)')();
 
-  IntColumn get i18nName =>
-      integer().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn get i18nName =>
+      text().customConstraint('NULL REFERENCES i18n(id)')();
 
-  IntColumn? get i18nInstructions =>
-      integer().nullable().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn? get i18nInstructions =>
+      text().nullable().customConstraint('NULL REFERENCES i18n(id)')();
 
   @override
   String get tableName => 'exercises';
@@ -48,8 +48,8 @@ class ExercisesModel extends Table {
 class ExercisesTypesModel extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  IntColumn get i18nName =>
-      integer().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn get i18nName =>
+      text().customConstraint('NULL REFERENCES i18n(id)')();
 
   @override
   String get tableName => 'exercises_types';
@@ -66,8 +66,8 @@ class ExercisesTypesModel extends Table {
 class EquipmentsModel extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  IntColumn get i18nName =>
-      integer().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn get i18nName =>
+      text().customConstraint('NULL REFERENCES i18n(id)')();
 
   @override
   String get tableName => 'equipments';
@@ -103,8 +103,8 @@ class ExercisesMusclesModel extends Table {
 class MusclesModel extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  IntColumn get i18nName =>
-      integer().customConstraint('NULL REFERENCES i18n(id)')();
+  TextColumn get i18nName =>
+      text().customConstraint('NULL REFERENCES i18n(id)')();
 
   @override
   String get tableName => 'muscles';

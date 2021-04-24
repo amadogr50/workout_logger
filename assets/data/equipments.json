@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "i18nName": "barbell"
+  },
+  {
+    "id": 2,
+    "i18nName": "ez_curl_bar"
+  },
+  {
+    "id": 3,
+    "i18nName": "trap_bar"
+  },
+  {
+    "id": 4,
+    "i18nName": "bodyweight"
+  },
+  {
+    "id": 5,
+    "i18nName": "cable_machine"
+  },
+  {
+    "id": 6,
+    "i18nName": "machine"
+  },
+  {
+    "id": 7,
+    "i18nName": "medicine_ball"
+  },
+  {
+    "id": 8,
+    "i18nName": "olympic_rings"
+  },
+  {
+    "id": 9,
+    "i18nName": "other"
+  },
+  {
+    "id": 10,
+    "i18nName": "rubber_band"
+  },
+  {
+    "id": 11,
+    "i18nName": "smith_machine"
+  },
+  {
+    "id": 12,
+    "i18nName": "swiss_ball"
+  },
+  {
+    "id": 13,
+    "i18nName": "t_bar"
+  },
+  {
+    "id": 14,
+    "i18nName": "weight_plate"
+  }
+]

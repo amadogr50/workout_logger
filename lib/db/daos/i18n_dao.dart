@@ -13,9 +13,10 @@ part 'i18n_dao.g.dart';
 class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
   I18nDao(MyDatabase db) : super(db);
 
-  Future<int> addTranslation(String translation) async {
-    final int i18nId = await into(i18n).insert(const I18nCompanion());
-    final int localeId = await getLocaleOrAdd();
+  Future<String> addTranslation(String translation) async {
+    final String i18nId =
+        await into(i18n).insert(const I18nCompanion()) as String;
+    final String localeId = await getLocaleOrAdd();
 
     await into(translations).insert(TranslationsCompanion(
       i18nId: Value(i18nId),
@@ -26,12 +27,12 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     return i18nId;
   }
 
-  Future<int> updateTranslation({
-    required int i18nId,
+  Future<String> updateTranslation({
+    required String i18nId,
     required String translation,
   }) async {
     return transaction(() async {
-      final int localeId = await getLocaleOrAdd();
+      final String localeId = await getLocaleOrAdd();
 
       await into(translations).insertOnConflictUpdate(TranslationsCompanion(
         i18nId: Value(i18nId),
@@ -43,7 +44,7 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     });
   }
 
-  Future<String> getTranslation(int i18nId) async {
+  Future<String> getTranslation(String i18nId) async {
     final localeId = await getLocale();
     final translationModel = await (select(translations)
           ..where((t) => t.i18nId.equals(i18nId) & t.localeId.equals(localeId)))
@@ -51,7 +52,7 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     return translationModel.textTranslation;
   }
 
-  Stream<String> watchTranslation(int i18nId) {
+  Stream<String> watchTranslation(String i18nId) {
     final localeIdStream = watchLocale();
 
     return localeIdStream.switchMap((localeId) {
@@ -64,7 +65,7 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     });
   }
 
-  Stream<Map<int, String>> watchTranslations(List<int> i18nIds) {
+  Stream<Map<String, String>> watchTranslations(List<String> i18nIds) {
     final localeIdStream = watchLocale();
 
     return localeIdStream.switchMap((localeId) {
@@ -82,11 +83,12 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     });
   }
 
-  Future<int> addLocale(String locale) async {
-    return into(locales).insert(LocalesCompanion(locale: Value(locale)));
+  Future<String> addLocale(String locale) async {
+    return into(locales).insert(LocalesCompanion(locale: Value(locale)))
+        as Future<String>;
   }
 
-  Future<int> getLocale() async {
+  Future<String> getLocale() async {
     Locale? localeModel = await (select(locales)
           ..where((t) => t.locale.equals(LocalesUtils.getCurrentLocale())))
         .getSingleOrNull();
@@ -94,10 +96,10 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
     localeModel ??= await (select(locales)..where((t) => t.locale.equals('en')))
         .getSingle();
 
-    return localeModel.id;
+    return localeModel.locale;
   }
 
-  Stream<int> watchLocale() {
+  Stream<String> watchLocale() {
     final currentLocale = LocalesUtils.getCurrentLocale();
 
     final Stream<List<Locale>> localesModelsStream = (select(locales)
@@ -110,23 +112,24 @@ class I18nDao extends DatabaseAccessor<MyDatabase> with _$I18nDaoMixin {
       if (localesModels.length == 2) {
         return localesModels
             .firstWhere((localeModel) => localeModel.locale == currentLocale)
-            .id;
+            .locale;
       }
 
-      return localesModels.first.id;
+      return localesModels.first.locale;
     });
   }
 
-  Future<int> getLocaleOrAdd() async {
+  Future<String> getLocaleOrAdd() async {
     Locale? localeModel = await (select(locales)
           ..where((t) => t.locale.equals(LocalesUtils.getCurrentLocale())))
         .getSingleOrNull();
     if (localeModel == null) {
-      final int localeId = await addLocale(LocalesUtils.getCurrentLocale());
-      localeModel = await (select(locales)..where((t) => t.id.equals(localeId)))
+      final String localeId = await addLocale(LocalesUtils.getCurrentLocale());
+      localeModel = await (select(locales)
+            ..where((t) => t.locale.equals(localeId)))
           .getSingle();
     }
 
-    return localeModel.id;
+    return localeModel.locale;
   }
 }

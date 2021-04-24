@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dartz: ^0.10.0-nullsafety.1
   dio: ^4.0.0
+  easy_localization: ^3.0.0
   equatable: ^2.0.0
   flutter:
     sdk: flutter
@@ -27,12 +28,14 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.0.1
   moor: ^4.2.1
+  moor_db_viewer: ^3.0.1
   path: ^1.8.0
   path_provider: ^2.0.1
   plugin_platform_interface: ^2.0.0
   rxdart: ^0.26.0
   sqlite3_flutter_libs: ^0.4.1
   stack: ^0.2.1
+  uuid: ^3.0.4
   validators: ^3.0.0
 
 dev_dependencies:
@@ -47,6 +50,9 @@ dev_dependencies:
   moor_generator: ^4.2.2
 
 flutter:
+  assets:
+    - assets/data/
+    - assets/translations/
   uses-material-design: true
   fonts:
     - family: OpenSans

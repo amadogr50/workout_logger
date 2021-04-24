@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "i18nName": "weight_based"
+  },
+  {
+    "id": 2,
+    "i18nName": "time_based"
+  }
+]

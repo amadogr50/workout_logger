@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
@@ -21,7 +23,7 @@ part 'db.g.dart';
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, 'dbxd.sqlite'));
     return VmDatabase(file);
   });
 }
@@ -58,7 +60,7 @@ class MyDatabase extends _$MyDatabase {
       : super(queryExecutor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -67,91 +69,122 @@ class MyDatabase extends _$MyDatabase {
 
           if (details.wasCreated) {
             // Locales
-            final enId = await into(locales)
-                .insert(const LocalesCompanion(locale: Value("en")));
+            final String localesJson =
+                await rootBundle.loadString('assets/data/locales.json');
+            final localesArr = jsonDecode(localesJson) as List;
+            for (final localeJson in localesArr) {
+              final locale = (localeJson as Map)["locale"] as String;
+              await into(locales)
+                  .insert(LocalesCompanion(locale: Value(locale)));
+            }
+
+            print("Locales Created Successfully");
 
             // I18n
-            final exerciseType1I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(exerciseType1I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Weight-Based")));
+            final String languagesTranslationsJson =
+                await rootBundle.loadString('assets/data/translations.json');
+            final languagesTranslations =
+                jsonDecode(languagesTranslationsJson) as Map<String, dynamic>;
+            for (final language in languagesTranslations.entries) {
+              for (final translation in language.value.entries) {
+                await into(i18n).insert(I18nCompanion(
+                  id: Value(translation.key as String),
+                ));
+                await into(translations).insert(TranslationsCompanion(
+                  i18nId: Value(translation.key as String),
+                  localeId: Value(language.key),
+                  textTranslation: Value(translation.value as String),
+                ));
+              }
+            }
 
-            final equipment1I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(equipment1I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Barbell")));
-
-            final equipment2I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(equipment2I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Dumbell")));
-
-            final muscle1I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(muscle1I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Chest")));
-
-            final muscle2I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(muscle2I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Biceps")));
-
-            final muscle3I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(muscle3I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Back")));
-
-            final exercise1I18nId =
-                await into(i18n).insert(const I18nCompanion());
-            await into(translations).insert(TranslationsCompanion(
-                i18nId: Value(exercise1I18nId),
-                localeId: Value(enId),
-                textTranslation: const Value("Bench Press")));
+            print("I18n Created Successfully");
 
             // Exercises Types
-            final exerciseType1Id = await into(exercisesTypesModel).insert(
+            final String exercisesTypesJson =
+                await rootBundle.loadString('assets/data/exercises_types.json');
+            final exercisesTypes = jsonDecode(exercisesTypesJson) as List;
+            for (final exerciseTypeJson in exercisesTypes) {
+              final exerciseTypeMap = exerciseTypeJson as Map;
+
+              await into(exercisesTypesModel).insert(
                 ExercisesTypesModelCompanion(
-                    i18nName: Value(exerciseType1I18nId)));
+                  id: Value(exerciseTypeMap["id"] as int),
+                  i18nName: Value(exerciseTypeMap["i18nName"] as String),
+                ),
+              );
+            }
+
+            print("Exercises Types Created Successfully");
 
             // Equipments
-            final equipment1Id = await into(equipmentsModel).insert(
-                EquipmentsModelCompanion(i18nName: Value(equipment1I18nId)));
+            final String equipmentsJson =
+                await rootBundle.loadString('assets/data/equipments.json');
+            final equipments = jsonDecode(equipmentsJson) as List;
+            for (final equipmentJson in equipments) {
+              final equipmentMap = equipmentJson as Map;
 
-            await into(equipmentsModel).insert(
-                EquipmentsModelCompanion(i18nName: Value(equipment2I18nId)));
+              await into(equipmentsModel).insert(
+                EquipmentsModelCompanion(
+                  id: Value(equipmentMap["id"] as int),
+                  i18nName: Value(equipmentMap["i18nName"] as String),
+                ),
+              );
+            }
+
+            print("Equipments Created Successfully");
 
             // Muscles
-            final muscle1Id = await into(musclesModel)
-                .insert(MusclesModelCompanion(i18nName: Value(muscle1I18nId)));
+            final String musclesJson =
+                await rootBundle.loadString('assets/data/muscles.json');
+            final muscles = jsonDecode(musclesJson) as List;
+            for (final muscleJson in muscles) {
+              final muscleMap = muscleJson as Map;
+              await into(musclesModel).insert(
+                MusclesModelCompanion(
+                  id: Value(muscleMap["id"] as int),
+                  i18nName: Value(muscleMap["i18nName"] as String),
+                ),
+              );
+            }
 
-            await into(musclesModel)
-                .insert(MusclesModelCompanion(i18nName: Value(muscle2I18nId)));
-
-            await into(musclesModel)
-                .insert(MusclesModelCompanion(i18nName: Value(muscle3I18nId)));
+            print("Muscles Created Successfully");
 
             // Exercises
-            final exercise1Id = await into(exercisesModel).insert(
+            final String exercisesJson =
+                await rootBundle.loadString('assets/data/exercises.json');
+            final exercises = jsonDecode(exercisesJson) as List;
+            for (final exerciseJson in exercises) {
+              final exerciseMap = exerciseJson as Map;
+              await into(exercisesModel).insert(
                 ExercisesModelCompanion(
-                    exerciseTypeId: Value(exerciseType1Id),
-                    equipmentId: Value(equipment1Id),
-                    i18nName: Value(exercise1I18nId)));
-            await into(exercisesMusclesModel).insert(
+                  id: Value(exerciseMap["id"] as int),
+                  exerciseTypeId: Value(exerciseMap["exerciseTypeId"] as int),
+                  equipmentId: Value(exerciseMap["equipmentId"] as int),
+                  i18nName: Value(exerciseMap["i18nName"] as String),
+                  i18nInstructions:
+                      Value(exerciseMap["i18nInstructions"] as String),
+                ),
+              );
+            }
+
+            print("Exercises Created Successfully");
+
+            // Exercises-Muscles
+            final String exercisesMusclesJson = await rootBundle
+                .loadString('assets/data/exercises_muscles.json');
+            final exercisesMuscles = jsonDecode(exercisesMusclesJson) as List;
+            for (final exerciseMuscleJson in exercisesMuscles) {
+              final exerciseMuscleMap = exerciseMuscleJson as Map;
+              await into(exercisesMusclesModel).insert(
                 ExercisesMusclesModelCompanion(
-                    exerciseId: Value(exercise1Id),
-                    muscleId: Value(muscle1Id)));
+                  exerciseId: Value(exerciseMuscleMap["exerciseId"] as int),
+                  muscleId: Value(exerciseMuscleMap["muscleId"] as int),
+                ),
+              );
+            }
+
+            print("Exercises-Muscles Created Successfully");
           }
         },
       );

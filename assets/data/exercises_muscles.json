@@ -1,0 +1,54 @@
+[
+  {
+    "exerciseId": 1,
+    "muscleId": 2
+  },
+  {
+    "exerciseId": 2,
+    "muscleId": 6
+  },
+  {
+    "exerciseId": 3,
+    "muscleId": 2
+  },
+  {
+    "exerciseId": 4,
+    "muscleId": 6
+  },
+  {
+    "exerciseId": 5,
+    "muscleId": 3
+  },
+  {
+    "exerciseId": 6,
+    "muscleId": 4
+  },
+  {
+    "exerciseId": 7,
+    "muscleId": 8
+  },
+  {
+    "exerciseId": 8,
+    "muscleId": 8
+  },
+  {
+    "exerciseId": 8,
+    "muscleId": 9
+  },
+  {
+    "exerciseId": 9,
+    "muscleId": 10
+  },
+  {
+    "exerciseId": 10,
+    "muscleId": 9
+  },
+  {
+    "exerciseId": 11,
+    "muscleId": 8
+  },
+  {
+    "exerciseId": 12,
+    "muscleId": 7
+  }
+]

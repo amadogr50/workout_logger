@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "exerciseTypeId": 1,
+    "equipmentId": 1,
+    "i18nName": "bench_press_name",
+    "i18nInstructions": "bench_press_instructions"
+  },
+  {
+    "id": 2,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "assisted_chin_up_name",
+    "i18nInstructions": "assisted_chin_up_instructions"
+  },
+  {
+    "id": 3,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "chest_press_machine_name",
+    "i18nInstructions": "chest_press_machine_instructions"
+  },
+  {
+    "id": 4,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "row_machine_name",
+    "i18nInstructions": "row_machine_instructions"
+  },
+  {
+    "id": 5,
+    "exerciseTypeId": 1,
+    "equipmentId": 2,
+    "i18nName": "ez_bar_bicep_curl_name",
+    "i18nInstructions": "ez_bar_bicep_curl_instructions"
+  },
+  {
+    "id": 6,
+    "exerciseTypeId": 1,
+    "equipmentId": 5,
+    "i18nName": "rope_overhead_triceps_extension_name",
+    "i18nInstructions": "rope_overhead_triceps_extension_instructions"
+  },
+  {
+    "id": 7,
+    "exerciseTypeId": 1,
+    "equipmentId": 11,
+    "i18nName": "smith_machine_squat_name",
+    "i18nInstructions": "smith_machine_squat_instructions"
+  },
+  {
+    "id": 8,
+    "exerciseTypeId": 1,
+    "equipmentId": 1,
+    "i18nName": "barbell_deadlift_name",
+    "i18nInstructions": "barbell_deadlift_instructions"
+  },
+  {
+    "id": 9,
+    "exerciseTypeId": 1,
+    "equipmentId": 1,
+    "i18nName": "barbell_hip_thrust_name",
+    "i18nInstructions": "barbell_hip_thrust_instructions"
+  },
+  {
+    "id": 10,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "seated_leg_curl_name",
+    "i18nInstructions": "seated_leg_curl_instructions"
+  },
+  {
+    "id": 11,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "leg_extension_name",
+    "i18nInstructions": "leg_extension_instructions"
+  },
+  {
+    "id": 12,
+    "exerciseTypeId": 1,
+    "equipmentId": 6,
+    "i18nName": "seated_calf_raise_name",
+    "i18nInstructions": "seated_calf_raise_instructions"
+  }
+]
